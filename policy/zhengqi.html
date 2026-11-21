@@ -111,12 +111,12 @@
   /* 专线资费档位行 */
   .opts{display:flex;flex-direction:column;gap:10px}
   .opt{border:1px solid var(--div);border-radius:10px;padding:12px 14px;background:#fcfdfe;min-width:0;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap}
-  .opt .on{flex:none;display:flex;align-items:center;gap:3px;min-width:118px;flex-wrap:wrap}
+  .opt .on{flex:0 1 auto;display:flex;align-items:center;gap:3px;min-width:0;flex-wrap:wrap}
   .opt .fee{font-size:21px;font-weight:800;color:var(--red);white-space:nowrap}
   .opt .fee-unit{font-size:12px;color:var(--sub);font-weight:400}
   .opt .compose{font-size:12px;color:var(--sub);font-weight:400;white-space:nowrap;margin-left:2px}
   .opt .bonus{font-size:12px;font-weight:700;color:var(--orange);background:var(--orange-l);border-radius:8px;padding:3px 10px;margin-left:8px;white-space:nowrap}
-  .opt .om{flex:1;min-width:220px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--sub)}
+  .opt .om{flex:1 1 220px;min-width:0;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--sub)}
   .opt .om .lv{background:var(--primary-l);color:var(--primary-d);border-radius:8px;padding:3px 10px;font-weight:700;font-size:12px;white-space:nowrap}
 
   /* 价格墙（各档包含内容相同时用） */
@@ -159,9 +159,9 @@
     .appbar-badge{display:none}
     .grid{grid-template-columns:1fr;gap:14px}
     .card{padding:16px}
-    .opt{padding:11px 12px}
-    .opt .on{min-width:96px}
-    .opt .om{min-width:0}
+    .opt{padding:11px 12px;flex-direction:column;align-items:stretch;gap:8px}
+    .opt .on{width:100%;min-width:0}
+    .opt .om{width:100%;min-width:0;flex:none}
     .opt .fee{font-size:18px}
     .notes{padding:16px}
     .notes ul{grid-template-columns:1fr}
