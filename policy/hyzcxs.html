@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>终端合约规则政策（销售）</title>
+<style>
+  :root{
+    --primary:#1976d2; --primary-d:#115293; --primary-l:#e8f1fb;
+    --surface:#ffffff; --bg:#f5f6f8;
+    --text:rgba(0,0,0,.87); --sub:rgba(0,0,0,.60); --div:rgba(0,0,0,.12);
+    --red:#d32f2f; --red-l:#fdecea; --orange:#ed6c02; --orange-l:#fff3e5;
+    --green:#2e7d32; --green-l:#e8f5e9; --purple:#6a1b9a; --purple-l:#f3e5f5;
+    --radius:12px; --shadow-1:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.08);
+    --shadow-2:0 3px 6px rgba(0,0,0,.16),0 2px 4px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+  button{font-family:inherit}
+
+  .app{display:flex;min-height:100vh}
+
+  /* ===== 侧边导航抽屉 ===== */
+  .drawer{width:260px;flex:none;background:var(--surface);border-right:1px solid var(--div);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:30}
+  .brand{display:flex;align-items:center;gap:12px;padding:20px 20px 16px}
+  .brand .logo{width:36px;height:36px;border-radius:10px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+  .brand .bt{font-size:15px;font-weight:700}
+  .brand .bs{font-size:11px;color:var(--sub)}
+  .side-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--sub);padding:8px 20px 6px}
+  .side-chips{display:flex;gap:6px;flex-wrap:wrap;padding:2px 14px 6px}
+  .gchip{border:1px solid var(--div);background:var(--surface);border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--sub);transition:.15s}
+  .gchip.active{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+  .side-search{padding:2px 14px 8px;position:relative}
+  .side-search input{width:100%;border:1px solid var(--div);border-radius:10px;padding:8px 30px 8px 12px;font-size:13px;outline:none;background:#f7f9fb;color:var(--text);transition:.15s}
+  .side-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-l)}
+  .side-search .clear-btn{position:absolute;right:22px;top:50%;transform:translateY(-50%);border:none;background:none;color:var(--sub);cursor:pointer;font-size:13px;padding:4px;line-height:1;display:none}
+  .side-search .clear-btn.show{display:inline}
+  .results{display:none;overflow-y:auto;max-height:calc(100vh - 430px);padding:0 10px 6px}
+  .results.show{display:block}
+  .results .rlabel{font-size:11px;color:var(--sub);padding:4px 8px 8px}
+  .result-item{padding:9px 12px;border-radius:10px;cursor:pointer;margin-bottom:2px}
+  .result-item:hover{background:var(--primary-l)}
+  .result-item .rs{font-size:10.5px;color:var(--primary);font-weight:600}
+  .result-item .rt{font-size:12.5px;color:var(--text);line-height:1.45;margin-top:2px;word-break:break-all}
+  .result-item .rm{font-size:11px;color:var(--sub);margin-top:2px}
+  .result-empty{padding:14px 8px;font-size:12px;color:var(--sub)}
+  .card.flash{animation:flashAnim 1.8s ease}
+  @keyframes flashAnim{0%,55%{box-shadow:0 0 0 3px var(--primary),var(--shadow-2)}100%{box-shadow:var(--shadow-1)}}
+
+  /* ===== 查找后关键字高亮 ===== */
+  mark.hl{background:#ffe082;color:#7a3e00;font-weight:800;border-radius:4px;padding:0 2px;margin:0 1px;
+    box-shadow:0 0 0 2px rgba(255,193,7,.35);animation:hlPulse 1.1s ease-in-out 3}
+  @keyframes hlPulse{
+    0%,100%{background:#ffe082;box-shadow:0 0 0 2px rgba(255,193,7,.35)}
+    50%{background:#ffca28;box-shadow:0 0 0 5px rgba(255,152,0,.45)}
+  }
+  mark.hl.sm{padding:0 1px;margin:0;border-radius:3px;box-shadow:none;animation:none;font-weight:700}
+  .hl-toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,16px);background:rgba(33,33,33,.92);
+    color:#fff;font-size:13px;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow-2);
+    opacity:0;pointer-events:none;transition:.22s;z-index:60;max-width:80vw;text-align:center}
+  .hl-toast.show{opacity:1;transform:translate(-50%,0)}
+  .nav{padding:4px 10px;display:flex;flex-direction:column;gap:2px}
+  .nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;border:none;background:none;border-radius:0 22px 22px 0;cursor:pointer;text-align:left;width:100%;color:var(--text)}
+  .nav-item .ico{font-size:20px;width:24px;text-align:center;flex:none}
+  .nav-item .nt{font-size:14px;font-weight:500;line-height:1.3}
+  .nav-item .ns{font-size:11px;color:var(--sub);margin-top:1px}
+  .nav-item.active{background:var(--primary-l);color:var(--primary-d)}
+  .nav-item.active .ns{color:var(--primary)}
+  .side-foot{margin-top:auto;padding:16px 20px;font-size:11px;color:var(--sub);border-top:1px solid var(--div)}
+
+  /* ===== 主区域 ===== */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+  /* 顶栏 App Bar */
+  .appbar{height:64px;background:var(--primary);color:#fff;display:flex;align-items:center;gap:16px;padding:0 24px;box-shadow:0 2px 4px rgba(0,0,0,.20);position:sticky;top:0;z-index:20}
+  .menu-btn{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:6px;border-radius:8px}
+  .appbar-title{font-size:19px;font-weight:600;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appbar-spacer{flex:1}
+  .appbar-badge{font-size:12px;background:rgba(255,255,255,.18);border-radius:999px;padding:5px 12px;white-space:nowrap}
+
+  /* 内容区 */
+  .content{padding:24px;max-width:1180px;width:100%;margin:0 auto}
+  .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 20px}
+  .toolbar .tlabel{font-size:13px;color:var(--sub)}
+  .chip{border:1px solid var(--div);background:var(--surface);border-radius:16px;padding:7px 15px;font-size:13px;cursor:pointer;color:var(--text);transition:.15s}
+  .chip.active{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+  .hint{font-size:13px;color:var(--sub)}
+
+  .sec-head{margin-bottom:20px}
+  .sec-head h2{font-size:22px;font-weight:600}
+  .sec-head .desc{font-size:13.5px;color:var(--sub);margin-top:5px;max-width:720px}
+
+  /* ===== 卡片网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+  .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-1);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:box-shadow:.18s}
+  .card:hover{box-shadow:var(--shadow-2)}
+
+  .card-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pill{font-size:12px;font-weight:600;border-radius:16px;padding:4px 12px;white-space:nowrap}
+  .pill.new{background:var(--primary-l);color:var(--primary-d)}
+  .pill.old{background:var(--orange-l);color:var(--orange)}
+  .pill.both{background:var(--green-l);color:var(--green)}
+  .pill.term{background:#f1f3f5;color:var(--sub)}
+  .pill.tag{background:var(--purple-l);color:var(--purple)}
+
+  .who{font-size:15px;font-weight:600;line-height:1.5}
+  .who small{display:block;font-weight:400;color:var(--sub);font-size:12.5px;margin-top:2px}
+
+  .note-red{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--red);background:var(--red-l);border-radius:10px;padding:9px 12px;word-break:break-word}
+  .note-red::before{content:"💬";font-size:13px;flex:none}
+
+  /* 档位 Paper 墙 */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+  .tier{border:1px solid var(--div);border-radius:10px;padding:12px 8px;text-align:center;background:#fcfdfe;min-width:0}
+  .tier .p{font-size:13px;font-weight:700;white-space:nowrap}
+  .tier .p small{color:var(--sub);font-weight:400;font-size:10px}
+  .tier .d{margin-top:6px;font-size:18px;font-weight:800;color:var(--red)}
+  .tier .d small{font-size:10px;color:var(--sub);font-weight:400;display:block;margin-top:2px;white-space:nowrap}
+  .tier:only-child{grid-column:1 / -1}
+
+  /* 预存方式明细行（智家合约） */
+  .modes{display:flex;flex-direction:column;gap:8px}
+  .mode-row{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--div);border-radius:10px;padding:10px 12px;background:#fcfdfe}
+  .mode-row .ml{flex:none;min-width:92px;font-size:13px;font-weight:700;padding-top:2px}
+  .mode-row .ml small{display:block;color:var(--sub);font-weight:400;font-size:10px;margin-top:2px}
+  .mode-row .mr{flex:1;min-width:0;font-size:12px;color:var(--sub);line-height:1.7}
+  .mode-row .mr b{color:var(--text)}
+  .mode-row .mr .red{color:var(--red)}
+
+  .req{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--orange);background:var(--orange-l);border-radius:10px;padding:9px 12px;word-break:break-word}
+  .req::before{content:"📎";font-size:13px;flex:none}
+
+  .cond{display:flex;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--div);padding-top:14px}
+  .cond .c{font-size:12.5px;color:var(--sub);background:#f5f6f8;border-radius:8px;padding:7px 12px}
+  .cond .c b{color:var(--text)}
+  .cond .c.hot{color:var(--orange)}
+
+  .ref{font-size:11px;color:#8a94a0;line-height:1.5;border-top:1px dashed var(--div);padding-top:12px;word-break:break-word}
+  .ref b{color:#76808c;font-weight:600}
+
+  /* 单宽卡片：主套餐蓝字括注与可选包选项 */
+  .who .blue{color:#1565c0;font-weight:500;font-size:12.5px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{border:1px solid var(--div);border-radius:10px;padding:11px 13px;background:#fcfdfe;min-width:0}
+  .opt .on{font-size:13.5px;font-weight:600;line-height:1.55;word-break:break-word}
+  .opt .om{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--sub)}
+  .opt .om .lv{background:var(--primary-l);color:var(--primary-d);border-radius:8px;padding:3px 10px;font-weight:700;font-size:12px}
+  .opt .om .oid{background:#f1f3f5;border-radius:8px;padding:3px 10px}
+  .opt .om .no{color:#8a94a0}
+
+  /* 单宽其他费用说明面板 */
+  .fee-note{background:var(--orange-l);border:1px solid rgba(237,108,2,.22);border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+  .fee-note h3{font-size:14px;font-weight:700;color:var(--orange);margin:0 0 6px}
+  .fee-note p{font-size:13px;line-height:1.75;margin:3px 0;color:var(--text);word-break:break-word}
+
+  /* ===== 术语说明 ===== */
+  .notes{margin-top:32px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-1);padding:22px 24px}
+  .notes h2{font-size:16px;margin-bottom:14px}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .notes ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px 24px}
+  .notes li{font-size:13px;color:var(--sub)}
+  .notes li b{color:var(--text)}
+  .empty{padding:48px;text-align:center;color:var(--sub);font-size:14px}
+
+  /* 抽屉遮罩（手机端） */
+  .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25}
+
+  /* ===== 平板 ===== */
+  @media(max-width:960px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+  }
+
+  /* ===== 手机：抽屉折叠为汉堡菜单 ===== */
+  @media(max-width:760px){
+    .drawer{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform:.22s ease;box-shadow:var(--shadow-2)}
+    .drawer.open{transform:translateX(0)}
+    .scrim.show{display:block}
+    .menu-btn{display:inline-flex}
+    .content{padding:16px 14px 40px}
+    .appbar{padding:0 14px;gap:10px;height:58px}
+    .appbar-title{font-size:16px}
+    .appbar-badge{display:none}
+    .grid{grid-template-columns:1fr;gap:14px}
+    .card{padding:16px}
+    .tiers{grid-template-columns:repeat(2,1fr)}
+    .tier .d{font-size:16px}
+    .notes{padding:16px}
+    .notes ul{grid-template-columns:1fr}
+    .sec-head h2{font-size:19px}
+    .results{max-height:38vh}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 侧边导航 -->
+  <aside class="drawer" id="drawer">
+    <div class="brand">
+      <div class="logo">📡</div>
+      <div>
+        <div class="bt">湖南电信合约</div>
+        <div class="bs">终端合约规则政策（销售）</div>
+      </div>
+    </div>
+    <div class="side-label">分类筛选</div>
+    <div class="side-chips" id="groupChips"></div>
+    <div class="side-label">关键字查找</div>
+    <div class="side-search">
+      <input id="searchInput" type="text" placeholder="档位 / 金额 / 销售品ID…" autocomplete="off">
+      <button class="clear-btn" id="searchClear" aria-label="清空查找">✕</button>
+    </div>
+    <div class="results" id="searchResults"></div>
+    <div class="side-label" id="navLabel">合约类别</div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="side-foot">全预存＝优惠额度 · 部分预存＝50% · 免预存＝0 · 档内大字＝月实缴 · 小字＝月返还 · 单宽按「套餐档次」计费</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- 主区域 -->
+  <div class="main">
+    <header class="appbar">
+      <button class="menu-btn" id="menuBtn" aria-label="菜单">☰</button>
+      <div class="appbar-title" id="appbarTitle"></div>
+      <div class="appbar-spacer"></div>
+      <div class="appbar-badge" id="appbarBadge"></div>
+    </header>
+
+    <div class="content">
+      <div class="sec-head">
+        <h2 id="secTitle"></h2>
+        <div class="desc" id="secDesc"></div>
+      </div>
+      <div class="toolbar" id="toolbar"></div>
+      <div class="fee-note" id="feeNote" hidden></div>
+      <div class="grid" id="grid"></div>
+
+      <section class="notes">
+        <h2>术语与口径说明</h2>
+        <div class="legend">
+          <span class="pill new">新入网用户</span>
+          <span class="pill both">新老用户均可</span>
+          <span class="pill old">存量用户（在网≥6个月）</span>
+          <span class="pill term">合约期 36期</span>
+          <span class="pill tag">随翼选 · 平 · 区域版</span>
+          <span class="pill tag">单宽 · 包年及以上</span>
+        </div>
+        <ul>
+          <li><b>终端优惠额度：</b>办理时终端可享受的优惠（抵扣）金额；全预存金额＝终端优惠额度。</li>
+          <li><b>预存款（三选一）：</b>全预存＝终端优惠额度；部分预存＝优惠额度的50%；免预存＝0元。</li>
+          <li><b>月返还：</b>合约期内每月返还的话费金额；预存越多、月返还越高，月实缴越低。</li>
+          <li><b>月实缴费用：</b>套餐费＋月费－月返还后每月实际缴纳的金额；卡片档位中大字为月实缴、小字为月返还。</li>
+          <li><b>月费 / 提速包：</b>部分合约需每月加收的费用（如20元随翼选包、提速包）；无加收的显示「无月费」。</li>
+          <li><b>智家合约：</b>智慧家庭终端合约；月返还与月实缴以79档为例测算，其他档位按套餐档次套算，第36个月返还额略有不同。</li>
+          <li><b>适用人群（红字说明）：</b>摘自原表「说明」列标红部分，标示对应销售品的适用用户范围。</li>
+          <li><b>身份分组：</b>新入网用户 / 新老融合套餐用户 / 在网6个月及以上融合老用户 / 智家合约用户 / 单宽用户。</li>
+          <li><b>单宽用户：</b>仅办理单宽带（不与手机融合）的用户；资费按「主套餐带宽 × 可选包」执行，费用以卡片「套餐档次」为准（如 360/年 即 360 元包年包）。</li>
+          <li><b>销售品ID / 方案编号：</b>受理时用于与后台系统核对，见各卡片底部备查信息。</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ 数据（逐行核对自五张原始政策表：新入网用户 / 新老融合套餐用户 / 在网6个月及以上融合老用户 / 智家合约用户 / 单宽资费标准） ============ */
+/* 「说明」列仅保留标红文字；全预存＝终端优惠额度，部分预存＝50%，免预存＝0 */
+const REF_N1 = "1、融合36期720终端5G新合约（随翼选）（ID 9315967）；2、融合36期720智慧终端20元5G新合约（随翼选）（ID 9315971）；方案编号 26HN100375";
+const REF_N2 = "1、单产品139档36期终端5G新合约（区域版）（ID 9315965）；2、单产品139档36期智慧终端5G新合约（区域版）（ID 9315975）；方案编号 26HN100380";
+const REF_G1 = "1、融合36期终端5G新合约（ID 9315960）；2、融合36期智慧终端5G新合约（ID 9315973）；方案编号 26HN100379";
+const REF_G2 = "1、融合36期终端10元5G新合约（ID 9315968）；2、融合36期智慧终端10元5G新合约（ID 9315978）；方案编号 26HN100372";
+const REF_G3 = "1、融合36期终端20元5G新合约（ID 9315959）；2、融合36期智慧终端20元5G新合约（ID 9315977）；方案编号 26HN100373";
+const REF_O1 = "1、存量融合36期终端5G新合约（ID 9315964）；2、存量融合36期智慧终端5G新合约（ID 9315970）；方案编号 26HN100378";
+const REF_O2 = "1、存量融合36期终端5G新合约（平）（ID 9100842）；2、存量融合36期智慧终端5G新合约（平）（ID 9018873）；方案编号 26HN100385";
+const REF_O3a= "1、存量219档融合36期终端5G新合约（平）（ID 9315966）；2、存量219档融合36期智慧终端5G新合约（平）（ID 9315972）；方案编号 26HN100377";
+const REF_O3b= "1、存量249档融合36期终端5G新合约（平）（ID 9315963）；2、存量249档融合36期智慧终端5G新合约（平）（ID 9315974）；方案编号 26HN100376";
+
+/* 单宽用户资费标准（逐行核对自「资费标准 · 一、包年及以上宽带资费」表；按主套餐合并，可选包为卡内选项；planNote 为原表蓝字括注） */
+const BB = [
+  {bw:"200M", planName:"200M家庭有线宽带主套餐", planNote:"（仅线上电渠可办理）", planId:"9105822",
+   opts:[
+     {name:"202610-200M家庭有线宽带360元包年包-电渠", id:"9316052", level:"360/年", planNo:"26HN100387"}
+   ]},
+  {bw:"300M", planName:"300M家庭有线宽带主套餐", planNote:"（仅线上电渠可办理）", planId:"9105826",
+   opts:[
+     {name:"202512-300M家庭有线宽带预存480元送600元（一年）", id:"9313956", level:"480元/年", planNo:"25HN101173"},
+     {name:"202512-300M家庭有线宽带预存960元送1200元（两年）", id:"9313957", level:"960元/2年", planNo:"25HN101172"},
+     {name:"202512-300M家庭有线宽带预存1440元送1800元（三年）", id:"9313958", level:"1440元/3年", planNo:"25HN101171"}
+   ]},
+  {bw:"500M", planName:"500M家庭有线宽带主套餐", planId:"9105830",
+   opts:[
+     {name:"202512-500M家庭有线宽带预存720元送480元（一年）", id:"9313959", level:"720元/年", planNo:"25HN101170"},
+     {name:"202512-500M家庭有线宽带预存1440元送960元（两年）", id:"9313960", level:"1440元/2年", planNo:"25HN101169"},
+     {name:"202512-500M家庭有线宽带预存2160元送1440元（三年）", id:"9313961", level:"2160元/3年", planNo:"25HN101168"}
+   ]},
+  {bw:"1000M", planName:"1000M家庭有线宽带主套餐", planId:"9105835",
+   opts:[
+     {name:"202512-1000M家庭有线宽带预存1200元送240元（一年）", id:"9313962", level:"1200元/年", planNo:"25HN101167"},
+     {name:"202512-1000M家庭有线宽带预存2400元送480元（两年）", id:"9313963", level:"2400元/2年", planNo:"25HN101166"},
+     {name:"202512-1000M家庭有线宽带预存3600元送720元（三年）", id:"9313964", level:"3600元/3年", planNo:"25HN101176"}
+   ]}
+];
+
+const SECTIONS = [
+  {
+    id:"new-user", group:"term", icon:"✨", title:"新入网用户",
+    sub:"139档 · 融合 + 单产品 · 预存三选一",
+    desc:"新入网用户办理139档终端合约；分融合套餐（月费20元随翼选包）与单产品套餐（区域版）两类销售品。全预存＝终端优惠额度，部分预存＝50%，免预存＝0；档位中大字为月实缴费用、小字为月返还。",
+    fit:"new",
+    rows:[
+      {fit:"new", term:"36期", tag:"随翼选", who:"139档融合套餐新入网用户", whoSub:"月费 20 元/月（随翼选包） · 终端优惠额度 ¥720", note:"适用于新入网融合用户",
+        quota:720, fee:20,
+        tiers:[{mode:"全预存",pre:720,pay:139,back:"月返20"},{mode:"部分预存",pre:360,pay:149,back:"月返10"},{mode:"免预存",pre:0,pay:159,back:"月返0"}],
+        ref:REF_N1},
+      {fit:"new", term:"36期", tag:"区域版", who:"139档单产品新入网用户", whoSub:"单产品套餐 · 无月费 · 终端优惠额度 ¥720",
+        quota:720, fee:0,
+        tiers:[{mode:"全预存",pre:720,pay:119,back:"月返20"},{mode:"部分预存",pre:360,pay:129,back:"月返10"},{mode:"免预存",pre:0,pay:139,back:"月返0"}],
+        ref:REF_N2}
+    ]
+  },
+  {
+    id:"plan-mixed", group:"term", icon:"👥", title:"新老融合套餐用户",
+    sub:"169-399档 · 无月费 / 10元 / 20元三组 · 预存三选一",
+    desc:"新入网、合约到期续约升一档、无约加约升两档等融合套餐用户通用；含无月费组、月费10元组、月费20元组三类销售品。全预存＝终端优惠额度，部分预存＝50%，免预存＝0；档位中大字为月实缴费用、小字为月返还。",
+    fit:"both",
+    rows:[
+      {fit:"both", term:"36期", who:"169档融合套餐用户", whoSub:"无月费 · 终端优惠额度 ¥1080", note:"适用于新入网、合约到期续约升一档、无约加约升两档用户",
+        quota:1080,
+        tiers:[{mode:"全预存",pre:1080,pay:139,back:"月返30"},{mode:"部分预存",pre:540,pay:154,back:"月返15"},{mode:"免预存",pre:0,pay:169,back:"月返0"}],
+        ref:REF_G1},
+      {fit:"both", term:"36期", who:"199档融合套餐用户", whoSub:"无月费 · 终端优惠额度 ¥1440", note:"适用于新入网、合约到期续约升一档、无约加约升两档用户",
+        quota:1440,
+        tiers:[{mode:"全预存",pre:1440,pay:159,back:"月返40"},{mode:"部分预存",pre:720,pay:179,back:"月返20"},{mode:"免预存",pre:0,pay:199,back:"月返0"}],
+        ref:REF_G1},
+      {fit:"both", term:"36期", who:"239档融合套餐用户", whoSub:"无月费 · 终端优惠额度 ¥2160", note:"适用于新入网、合约到期续约升一档、无约加约升两档用户",
+        quota:2160,
+        tiers:[{mode:"全预存",pre:2160,pay:179,back:"月返60"},{mode:"部分预存",pre:1080,pay:209,back:"月返30"},{mode:"免预存",pre:0,pay:239,back:"月返0"}],
+        ref:REF_G1},
+      {fit:"both", term:"36期", who:"299档融合套餐用户", whoSub:"无月费 · 终端优惠额度 ¥2700", note:"适用于新入网、合约到期续约升一档、无约加约升两档用户",
+        quota:2700,
+        tiers:[{mode:"全预存",pre:2700,pay:224,back:"月返75"},{mode:"部分预存",pre:1350,pay:261.5,back:"月返37.5"},{mode:"免预存",pre:0,pay:299,back:"月返0"}],
+        ref:REF_G1},
+      {fit:"both", term:"36期", who:"399档融合套餐用户", whoSub:"无月费 · 终端优惠额度 ¥3600", note:"适用于新入网、合约到期续约升一档、无约加约升两档用户",
+        quota:3600,
+        tiers:[{mode:"全预存",pre:3600,pay:299,back:"月返100"},{mode:"部分预存",pre:1800,pay:349,back:"月返50"},{mode:"免预存",pre:0,pay:399,back:"月返0"}],
+        ref:REF_G1},
+      {fit:"both", term:"36期", who:"169档融合套餐用户", whoSub:"月费 10 元/月 · 终端优惠额度 ¥1440",
+        quota:1440, fee:10,
+        tiers:[{mode:"全预存",pre:1440,pay:139,back:"月返40"},{mode:"部分预存",pre:720,pay:159,back:"月返20"},{mode:"免预存",pre:0,pay:179,back:"月返0"}],
+        ref:REF_G2},
+      {fit:"both", term:"36期", who:"239档融合套餐用户", whoSub:"月费 10 元/月 · 终端优惠额度 ¥2520",
+        quota:2520, fee:10,
+        tiers:[{mode:"全预存",pre:2520,pay:179,back:"月返70"},{mode:"部分预存",pre:1260,pay:214,back:"月返35"},{mode:"免预存",pre:0,pay:249,back:"月返0"}],
+        ref:REF_G2},
+      {fit:"both", term:"36期", who:"169档融合套餐用户", whoSub:"月费 20 元/月 · 终端优惠额度 ¥1800", note:"常用于新入网礼包包装",
+        quota:1800, fee:20,
+        tiers:[{mode:"全预存",pre:1800,pay:139,back:"月返50"},{mode:"部分预存",pre:900,pay:164,back:"月返25"},{mode:"免预存",pre:0,pay:189,back:"月返0"}],
+        ref:REF_G3},
+      {fit:"both", term:"36期", who:"199档融合套餐用户", whoSub:"月费 20 元/月 · 终端优惠额度 ¥2160", note:"常用于新入网礼包包装",
+        quota:2160, fee:20,
+        tiers:[{mode:"全预存",pre:2160,pay:159,back:"月返60"},{mode:"部分预存",pre:1080,pay:189,back:"月返30"},{mode:"免预存",pre:0,pay:219,back:"月返0"}],
+        ref:REF_G3}
+    ]
+  },
+  {
+    id:"plan-old", group:"term", icon:"⏳", title:"在网6个月及以上融合老用户",
+    sub:"139-399档 · （平）销售品 · 预存三选一",
+    desc:"在网6个月及以上融合老用户适用；含存量融合合约、（平）系列与提速包口径销售品。全预存＝终端优惠额度，部分预存＝50%，免预存＝0；档位中大字为月实缴费用、小字为月返还。",
+    fit:"old",
+    rows:[
+      {fit:"old", term:"36期", who:"现139档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1080", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:1080,
+        tiers:[{mode:"全预存",pre:1080,pay:109,back:"月返30"},{mode:"部分预存",pre:540,pay:124,back:"月返15"},{mode:"免预存",pre:0,pay:139,back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", who:"现169档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1440", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:1440,
+        tiers:[{mode:"全预存",pre:1440,pay:129,back:"月返40"},{mode:"部分预存",pre:720,pay:149,back:"月返20"},{mode:"免预存",pre:0,pay:169,back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", who:"现199档或219档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1800 · 实缴按199/219档顺序对应", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:1800,
+        tiers:[{mode:"全预存",pre:1800,pay:"149/169",back:"月返50"},{mode:"部分预存",pre:900,pay:"174/194",back:"月返25"},{mode:"免预存",pre:0,pay:"199/219",back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", who:"现239档或249档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥2160 · 实缴按239/249档顺序对应", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:2160,
+        tiers:[{mode:"全预存",pre:2160,pay:"179/189",back:"月返60"},{mode:"部分预存",pre:1080,pay:"209/219",back:"月返30"},{mode:"免预存",pre:0,pay:"239/249",back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", who:"现299档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥2700", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:2700,
+        tiers:[{mode:"全预存",pre:2700,pay:224,back:"月返75"},{mode:"部分预存",pre:1350,pay:261.5,back:"月返37.5"},{mode:"免预存",pre:0,pay:299,back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", who:"现399档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥3600", note:"适用于合约到期续约升一档、无约加约升两档用户",
+        quota:3600,
+        tiers:[{mode:"全预存",pre:3600,pay:299,back:"月返100"},{mode:"部分预存",pre:1800,pay:349,back:"月返50"},{mode:"免预存",pre:0,pay:399,back:"月返0"}],
+        ref:REF_O1},
+      {fit:"old", term:"36期", tag:"平", who:"现169档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1080", note:"适用于合约到期续约（平迁）、无约加约升一档用户",
+        quota:1080,
+        tiers:[{mode:"全预存",pre:1080,pay:139,back:"月返30"},{mode:"部分预存",pre:540,pay:154,back:"月返15"},{mode:"免预存",pre:0,pay:169,back:"月返0"}],
+        ref:REF_O2},
+      {fit:"old", term:"36期", tag:"平", who:"现199档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1440", note:"适用于合约到期续约（平迁）、无约加约升一档用户",
+        quota:1440,
+        tiers:[{mode:"全预存",pre:1440,pay:159,back:"月返40"},{mode:"部分预存",pre:720,pay:179,back:"月返20"},{mode:"免预存",pre:0,pay:199,back:"月返0"}],
+        ref:REF_O2},
+      {fit:"old", term:"36期", tag:"平", who:"现239档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥1800", note:"适用于合约到期续约（平迁）、无约加约升一档用户",
+        quota:1800,
+        tiers:[{mode:"全预存",pre:1800,pay:189,back:"月返50"},{mode:"部分预存",pre:900,pay:214,back:"月返25"},{mode:"免预存",pre:0,pay:239,back:"月返0"}],
+        ref:REF_O2},
+      {fit:"old", term:"36期", tag:"平", who:"现299档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥2160", note:"适用于合约到期续约（平迁）、无约加约升一档用户",
+        quota:2160,
+        tiers:[{mode:"全预存",pre:2160,pay:239,back:"月返60"},{mode:"部分预存",pre:1080,pay:269,back:"月返30"},{mode:"免预存",pre:0,pay:299,back:"月返0"}],
+        ref:REF_O2},
+      {fit:"old", term:"36期", tag:"平", who:"现399档融合套餐用户（在网≥6个月）", whoSub:"无月费 · 终端优惠额度 ¥2700", note:"适用于合约到期续约（平迁）、无约加约升一档用户",
+        quota:2700,
+        tiers:[{mode:"全预存",pre:2700,pay:324,back:"月返75"},{mode:"部分预存",pre:1350,pay:361.5,back:"月返37.5"},{mode:"免预存",pre:0,pay:399,back:"月返0"}],
+        ref:REF_O2},
+      {fit:"old", term:"36期", tag:"平", who:"199+20档融合套餐用户（提速包口径）", whoSub:"含 20 元/月提速包 · 终端优惠额度 ¥1080", note:"适用于原219档合约到期续约（平迁）用户",
+        quota:1080, fee:20, feeLabel:"提速包",
+        tiers:[{mode:"全预存",pre:1080,pay:189,back:"月返30"},{mode:"部分预存",pre:540,pay:204,back:"月返15"},{mode:"免预存",pre:0,pay:219,back:"月返0"}],
+        ref:REF_O3a},
+      {fit:"old", term:"36期", tag:"平", who:"239+10档融合套餐用户（提速包口径）", whoSub:"含 10 元/月提速包 · 终端优惠额度 ¥1440", note:"适用于原249档合约到期续约（平迁）用户",
+        quota:1440, fee:10, feeLabel:"提速包",
+        tiers:[{mode:"全预存",pre:1440,pay:209,back:"月返40"},{mode:"部分预存",pre:720,pay:229,back:"月返20"},{mode:"免预存",pre:0,pay:249,back:"月返0"}],
+        ref:REF_O3b}
+    ]
+  },
+  {
+    id:"smarthome", group:"smarthome", icon:"🏠", title:"智家合约用户",
+    sub:"79档及以上 · 月费10 / 20元 · 36期",
+    desc:"79档及以上用户办理智家5G新合约（月费10元 / 20元两档销售品）；月返还与月实缴以79档为例测算，其他档位按套餐档次套算，第1-35月与第36个月返还额略有差异。全预存＝终端优惠额度，部分预存＝50%，免预存＝0。",
+    fit:"both",
+    rows:[
+      {fit:"both", term:"36期", who:"79档及以上融合套餐用户（智家合约 10元档）", whoSub:"月费 10 元/月 · 终端优惠额度 ¥199 · 以79档为例测算",
+        quota:199, fee:10,
+        modes:[
+          {k:"全预存", pre:"¥199", red:true, back:"5.53（第1-35月）/ 5.45（第36月）", pay:"83.47（第1-35月）/ 83.55（第36月）"},
+          {k:"部分预存", pre:"¥99.5", back:"2.77（第1-35月）/ 2.55（第36月）", pay:"86.23（第1-35月）/ 86.45（第36月）"},
+          {k:"免预存", pre:"¥0", back:"无返还", pay:"89 元（79+10）"}
+        ],
+        ref:"1、智家5G新合约（10元）（ID 9315961）；2、智慧终端5G新合约（10元）（ID 9315969）；方案编号 26HN100374"},
+      {fit:"both", term:"36期", who:"79档及以上融合套餐用户（智家合约 20元档）", whoSub:"月费 20 元/月 · 终端优惠额度 ¥399 · 以79档为例测算",
+        quota:399, fee:20,
+        modes:[
+          {k:"全预存", pre:"¥399", red:true, back:"11.09（第1-35月）/ 10.85（第36月）", pay:"87.91（第1-35月）/ 88.15（第36月）"},
+          {k:"部分预存", pre:"¥199.5", red:true, back:"5.55（第1-35月）/ 5.25（第36月）", pay:"93.45（第1-35月）/ 93.75（第36月）"},
+          {k:"免预存", pre:"¥0", back:"无返还", pay:"99 元（79+20）"}
+        ],
+        ref:"1、智家5G新合约（20元）（ID 9315962）；2、智慧终端5G新合约（20元）（ID 9315976）；方案编号 /"}
+    ]
+  },
+  {
+    id:"single-bb", group:"broadband", icon:"🌐", title:"单宽用户",
+    sub:"包年及以上宽带资费 · 4 类主套餐 · 10 个可选包",
+    desc:"单宽（单宽带，不与手机融合）用户资费标准：按主套餐带宽分为四档，每张卡片内列出对应可选包；预存金额越大、赠送金额越多，费用以「套餐档次」为准；其中 200M 包年包为电渠（线上）销售品。云电视功能使用费、调测费等其他费用见下方说明。",
+    fitTip:"本类为单宽带资费（不含手机），按「套餐档次」计费；云电视、调测费等其他费用见下方说明。",
+    fees:[
+      "一、如需加装云电视，每月需要支付20元云电视功能使用费。线上可办理240元云电视包年包(电视调测费200元)；",
+      "二、调测费：100元代管万兆光猫、200元代管云盒。注：如自备自终端，则不收调测费。"
+    ],
+    rows:BB
+  }
+];
+
+const FIT = {
+  new:{label:"新入网用户", cls:"new"},
+  old:{label:"存量用户（在网≥6个月）", cls:"old"},
+  both:{label:"新老用户均可", cls:"both"}
+};
+
+const GROUPS = [
+  {id:"all", label:"全部"},
+  {id:"term", label:"手机终端合约"},
+  {id:"smarthome", label:"智家终端合约"},
+  {id:"broadband", label:"宽带合约"}
+];
+
+let activeSec = SECTIONS[0].id;
+let activeFit = "all";
+let activeGroup = "all";
+let searchQ = "";
+
+const drawerEl = document.getElementById("drawer");
+const scrimEl = document.getElementById("scrim");
+const sideNavEl = document.getElementById("sideNav");
+const appbarTitleEl = document.getElementById("appbarTitle");
+const appbarBadgeEl = document.getElementById("appbarBadge");
+const secTitleEl = document.getElementById("secTitle");
+const secDescEl = document.getElementById("secDesc");
+const toolbarEl = document.getElementById("toolbar");
+const gridEl = document.getElementById("grid");
+const groupChipsEl = document.getElementById("groupChips");
+const searchInputEl = document.getElementById("searchInput");
+const searchClearEl = document.getElementById("searchClear");
+const searchResultsEl = document.getElementById("searchResults");
+const navLabelEl = document.getElementById("navLabel");
+const feeNoteEl = document.getElementById("feeNote");
+
+function openDrawer(){ drawerEl.classList.add("open"); scrimEl.classList.add("show"); }
+function closeDrawer(){ drawerEl.classList.remove("open"); scrimEl.classList.remove("show"); }
+
+document.getElementById("menuBtn").onclick = openDrawer;
+scrimEl.onclick = closeDrawer;
+
+function visibleSections(){
+  return activeGroup==="all" ? SECTIONS : SECTIONS.filter(s=>s.group===activeGroup);
+}
+
+function renderNav(){
+  sideNavEl.innerHTML = visibleSections().map(s=>`
+    <button class="nav-item ${s.id===activeSec?"active":""}" data-id="${s.id}">
+      <span class="ico">${s.icon}</span>
+      <span><div class="nt">${s.title}</div><div class="ns">${s.sub}</div></span>
+    </button>`).join("");
+  sideNavEl.querySelectorAll(".nav-item").forEach(n=>{
+    n.onclick=()=>{ activeSec=n.dataset.id; activeFit="all"; closeDrawer(); render(); };
+  });
+}
+
+function renderGroupChips(){
+  groupChipsEl.innerHTML = GROUPS.map(g=>{
+    const n = g.id==="all" ? SECTIONS.length : SECTIONS.filter(s=>s.group===g.id).length;
+    return `<button class="gchip ${activeGroup===g.id?"active":""}" data-g="${g.id}">${g.label} ${n}</button>`;
+  }).join("");
+  groupChipsEl.querySelectorAll(".gchip").forEach(c=>{
+    c.onclick=()=>{
+      activeGroup=c.dataset.g;
+      const vis=visibleSections();
+      if(vis.length && !vis.find(s=>s.id===activeSec)) activeSec=vis[0].id;
+      render();
+    };
+  });
+}
+
+function cardDomId(secId, idx){ return `card-${secId}-${idx}`; }
+
+function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+function escapeReg(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+
+/* 左侧结果列表：命中词加标记 */
+function markHtml(str, q){
+  const s = String(str==null ? "" : str);
+  if(!q) return escapeHtml(s);
+  const re = new RegExp(escapeReg(q), "gi");
+  let out = "", last = 0, m;
+  while((m = re.exec(s))){
+    if(!m[0]){ re.lastIndex++; continue; }
+    out += escapeHtml(s.slice(last, m.index)) + `<mark class="hl sm">${escapeHtml(m[0])}</mark>`;
+    last = m.index + m[0].length;
+  }
+  return out + escapeHtml(s.slice(last));
+}
+
+/* 跳转后的卡片内：把命中词包成高亮标记，返回高亮处数 */
+function highlightIn(root, q){
+  if(!root || !q || q.length < 2) return 0;
+  const probe = new RegExp(escapeReg(q), "i");
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      if(!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = node.parentNode;
+      if(!p || /^(SCRIPT|STYLE|MARK|INPUT|TEXTAREA)$/.test(p.nodeName)) return NodeFilter.FILTER_REJECT;
+      return probe.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = []; let n;
+  while((n = walker.nextNode())) nodes.push(n);
+  let count = 0;
+  nodes.forEach(node=>{
+    const text = node.nodeValue, frag = document.createDocumentFragment();
+    const re = new RegExp(escapeReg(q), "gi");
+    let last = 0, m, hit = 0;
+    while((m = re.exec(text))){
+      if(!m[0]){ re.lastIndex++; continue; }
+      if(m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const mark = document.createElement("mark");
+      mark.className = "hl";
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      hit++; last = m.index + m[0].length;
+    }
+    if(last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    if(hit){ node.parentNode.replaceChild(frag, node); count += hit; }
+  });
+  return count;
+}
+
+function clearHighlights(){
+  document.querySelectorAll("mark.hl").forEach(mk=>mk.replaceWith(document.createTextNode(mk.textContent)));
+}
+
+let hlToastTimer = null;
+function showHlToast(msg){
+  let t = document.getElementById("hlToast");
+  if(!t){ t = document.createElement("div"); t.id = "hlToast"; t.className = "hl-toast"; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(hlToastTimer);
+  hlToastTimer = setTimeout(()=>t.classList.remove("show"), 2400);
+}
+
+function rowHaystack(sec, r){
+  const parts=[sec.title, sec.desc, r.who||"", r.whoSub||"", r.term||"", r.tag||"", r.ref||"", r.note||"",
+    "终端优惠", r.quota===undefined?"":String(r.quota), "月费", r.fee===undefined?"无月费":String(r.fee)];
+  (r.tiers||[]).forEach(t=>parts.push(t.mode||`${t.plan}档`, String(t.pre), String(t.pay), t.back||""));
+  (r.modes||[]).forEach(m=>{ parts.push(m.k, m.pre, m.back, m.pay, "月返还", "月实缴"); if(m.red) parts.push("以79档为例"); });
+  if(r.req) parts.push(r.req);
+  if(r.opts){
+    parts.push("单宽","宽带","包年","主套餐",r.bw,r.planName,r.planNote||"",r.planId);
+    r.opts.forEach(o=>parts.push("可选包",o.name,o.id,"套餐档次",o.level,"方案编号",o.planNo,"预存","送"));
+  }
+  if(sec.fees && sec.fees.length) parts.push("其他费用说明", sec.fees.join(" "));
+  return parts.join(" ").toLowerCase();
+}
+
+function renderSearch(){
+  if(!searchQ){
+    searchClearEl.classList.remove("show");
+    searchResultsEl.classList.remove("show");
+    searchResultsEl.innerHTML="";
+    sideNavEl.style.display="";
+    navLabelEl.style.display="";
+    return;
+  }
+  searchClearEl.classList.add("show");
+  sideNavEl.style.display="none";
+  navLabelEl.style.display="none";
+  const hits=[];
+  SECTIONS.forEach(s=>s.rows.forEach((r,i)=>{ if(rowHaystack(s,r).includes(searchQ)) hits.push({s,r,i}); }));
+  searchResultsEl.classList.add("show");
+  searchResultsEl.innerHTML = hits.length
+    ? `<div class="rlabel">全页找到 ${hits.length} 条 · 点击跳转到对应卡片</div>` +
+      hits.map(h=>{
+        const meta = h.r.tiers
+          ? h.r.tiers.map(t=>`${t.mode||t.plan} 实缴¥${t.pay}`).join(" / ")
+          : h.r.opts
+            ? h.r.opts.map(o=>o.level).join(" / ")
+            : (h.r.modes||[]).map(m=>`${m.k} 实缴${m.pay}`).join(" / ");
+        return `<div class="result-item" data-sec="${h.s.id}" data-idx="${h.i}">
+          <div class="rs">${h.s.icon} ${h.s.title}</div>
+          <div class="rt">${markHtml(h.r.who, searchQ)}</div>
+          <div class="rm">${markHtml(meta, searchQ)}</div>
+        </div>`;
+      }).join("")
+    : `<div class="rlabel">全页查找「${escapeHtml(searchQ)}」</div><div class="result-empty">未找到相关内容，可试试档位（如 169）、金额（如 720）、销售品ID 或方案编号。</div>`;
+  searchResultsEl.querySelectorAll(".result-item").forEach(el=>{
+    el.onclick=()=>jumpTo(el.dataset.sec, cardDomId(el.dataset.sec, Number(el.dataset.idx)));
+  });
+}
+
+function jumpTo(secId, domId){
+  activeSec=secId; activeFit="all";
+  closeDrawer(); render();
+  const q = searchInputEl.value.trim();
+  setTimeout(()=>{
+    const el=document.getElementById(domId);
+    if(!el) return;
+    const hits = highlightIn(el, q);
+    el.classList.add("flash");
+    setTimeout(()=>el.classList.remove("flash"),1900);
+    const firstMark = el.querySelector("mark.hl");
+    (firstMark || el).scrollIntoView({behavior:"smooth", block:"center"});
+    if(hits) showHlToast(`已定位到卡片，并高亮「${q}」共 ${hits} 处`);
+  }, 90);
+}
+
+searchInputEl.addEventListener("input", ()=>{
+  clearHighlights();
+  searchQ=searchInputEl.value.trim().toLowerCase(); renderSearch();
+});
+searchInputEl.addEventListener("keydown", e=>{
+  if(e.key==="Enter"){
+    const first=searchResultsEl.querySelector(".result-item");
+    if(first) jumpTo(first.dataset.sec, cardDomId(first.dataset.sec, Number(first.dataset.idx)));
+  }
+  if(e.key==="Escape"){ clearHighlights(); searchInputEl.value=""; searchQ=""; renderSearch(); }
+});
+searchClearEl.onclick=()=>{ clearHighlights(); searchInputEl.value=""; searchQ=""; renderSearch(); searchInputEl.focus(); };
+
+function renderToolbar(){
+  const sec = SECTIONS.find(s=>s.id===activeSec);
+  if(sec.fitTip){ toolbarEl.innerHTML = `<span class="hint">✓ ${sec.fitTip}</span>`; return; }
+  if(sec.fit==="both"){
+    toolbarEl.innerHTML = `<span class="hint">✓ 本类合约新老用户均可办理，无需按身份筛选。</span>`;
+    return;
+  }
+  if(sec.fit==="new"){
+    toolbarEl.innerHTML = `<span class="hint">✓ 本类合约仅限新入网用户办理，无需按身份筛选。</span>`;
+    return;
+  }
+  if(sec.fit==="old"){
+    toolbarEl.innerHTML = `<span class="hint">✓ 本类合约仅限在网6个月及以上存量老用户办理，无需按身份筛选。</span>`;
+    return;
+  }
+  toolbarEl.innerHTML =
+    `<span class="tlabel">按身份筛选：</span>
+     <button class="chip ${activeFit==="all"?"active":""}" data-f="all">全部</button>
+     <button class="chip ${activeFit==="new"?"active":""}" data-f="new">新入网用户</button>
+     <button class="chip ${activeFit==="old"?"active":""}" data-f="old">存量用户</button>`;
+  toolbarEl.querySelectorAll(".chip").forEach(c=>{
+    c.onclick=()=>{activeFit=c.dataset.f;render();};
+  });
+}
+
+function cardRow(row, sec, idx){
+  /* 单宽资费卡：按主套餐合并，可选包为卡内可选项 */
+  if(row.opts){
+    const opts = row.opts.map(o=>`
+      <div class="opt">
+        <div class="on">${o.name}</div>
+        <div class="om">
+          <span class="lv">${o.level}</span>
+          <span class="oid">ID ${o.id}</span>
+          <span class="no">方案编号 ${o.planNo}</span>
+        </div>
+      </div>`).join("");
+    return `
+    <div class="card" id="${cardDomId(sec.id, idx)}">
+      <div class="card-pills">
+        <span class="pill tag">${row.bw}</span>
+        <span class="pill term">${row.opts.length} 个可选包</span>
+      </div>
+      <div class="who">${row.planName}${row.planNote?`<span class="blue"> ${row.planNote}</span>`:""}<small>主套餐销售品 ID ${row.planId}</small></div>
+      <div class="opts">${opts}</div>
+    </div>`;
+  }
+  const fit = FIT[row.fit];
+  const pills = [
+    `<span class="pill ${fit.cls}">${fit.label}</span>`,
+    row.term?`<span class="pill term">合约期 ${row.term}</span>`:"",
+    row.tag?`<span class="pill tag">${row.tag}</span>`:""
+  ].join("");
+
+  const tiers = (row.tiers||[]).map(t=>`
+    <div class="tier">
+      <div class="p">${t.mode}<small> ¥${t.pre}</small></div>
+      <div class="d">¥${t.pay} <small>${t.back}</small></div>
+    </div>`).join("");
+
+  const modes = (row.modes||[]).map(m=>`
+    <div class="mode-row">
+      <div class="ml">${m.k}<small>${m.pre}</small></div>
+      <div class="mr">
+        <div>${m.red?`<span class="red">以79档为例，</span>`:""}月返还：<b>${m.back}</b></div>
+        <div>${m.red?`<span class="red">以79档为例，</span>`:""}月实缴：<b>${m.pay}</b></div>
+      </div>
+    </div>`).join("");
+
+  const feeLabel = row.feeLabel||"月费";
+  const cond = [
+    `<span class="c">终端优惠 <b>¥${row.quota}</b></span>`,
+    row.fee>0
+      ? `<span class="c hot">${feeLabel} <b>+${row.fee} 元/月</b></span>`
+      : `<span class="c">无月费</span>`
+  ].join("");
+
+  return `
+    <div class="card" id="${cardDomId(sec.id, idx)}">
+      <div class="card-pills">${pills}</div>
+      <div class="who">${row.who}${row.whoSub?`<small>${row.whoSub}</small>`:""}</div>
+      ${row.note?`<div class="note-red">${row.note}</div>`:""}
+      ${row.tiers?`<div class="tiers">${tiers}</div>`:""}
+      ${row.modes?`<div class="modes">${modes}</div>`:""}
+      <div class="cond">${cond}</div>
+      <div class="ref"><b>合约销售品：</b>${row.ref}</div>
+    </div>`;
+}
+
+function render(){
+  const sec = SECTIONS.find(s=>s.id===activeSec);
+  renderGroupChips();
+  renderNav();
+  appbarTitleEl.textContent = sec.title;
+  appbarBadgeEl.textContent = sec.sub;
+  secTitleEl.textContent = sec.title;
+  secDescEl.textContent = sec.desc;
+  renderToolbar();
+  if(sec.fees && sec.fees.length){
+    feeNoteEl.hidden = false;
+    feeNoteEl.innerHTML = `<h3>其他费用说明</h3>` + sec.fees.map(f=>`<p>${f}</p>`).join("");
+  }else{
+    feeNoteEl.hidden = true;
+    feeNoteEl.innerHTML = "";
+  }
+  let rows = sec.rows;
+  if(sec.fit==="mixed" && activeFit!=="all") rows = rows.filter(r=>r.fit===activeFit);
+  gridEl.innerHTML = rows.length
+    ? rows.map((r,i)=>cardRow(r, sec, i)).join("")
+    : `<div class="empty">该身份下暂无对应合约。</div>`;
+}
+
+render();
+</script>
+</body>
+</html>
