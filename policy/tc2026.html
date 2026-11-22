@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>（全省）2026新套餐体系政策梳理汇总</title>
+<style>
+  :root{
+    --primary:#1976d2; --primary-d:#115293; --primary-l:#e8f1fb;
+    --surface:#ffffff; --bg:#f5f6f8;
+    --text:rgba(0,0,0,.87); --sub:rgba(0,0,0,.60); --div:rgba(0,0,0,.12);
+    --red:#d32f2f; --red-l:#fdecea; --orange:#ed6c02; --orange-l:#fff3e5;
+    --green:#2e7d32; --green-l:#e8f5e9; --purple:#6a1b9a; --purple-l:#f3e5f5;
+    --gold-l:#fffbe9; --gold-d:#8a6d00; --gold-b:#e3c25c;
+    --radius:12px; --shadow-1:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.08);
+    --shadow-2:0 3px 6px rgba(0,0,0,.16),0 2px 4px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+  button{font-family:inherit}
+
+  .app{display:flex;min-height:100vh}
+
+  /* ===== 侧边导航抽屉 ===== */
+  .drawer{width:260px;flex:none;background:var(--surface);border-right:1px solid var(--div);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:30}
+  .brand{display:flex;align-items:center;gap:12px;padding:20px 20px 16px}
+  .brand .logo{width:36px;height:36px;border-radius:10px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+  .brand .bt{font-size:15px;font-weight:700}
+  .brand .bs{font-size:11px;color:var(--sub)}
+  .side-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--sub);padding:8px 20px 6px}
+  .side-chips{display:flex;gap:6px;flex-wrap:wrap;padding:2px 14px 6px}
+  .gchip{border:1px solid var(--div);background:var(--surface);border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--sub);transition:.15s}
+  .gchip.active{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+  .side-search{padding:2px 14px 8px;position:relative}
+  .side-search input{width:100%;border:1px solid var(--div);border-radius:10px;padding:8px 30px 8px 12px;font-size:13px;outline:none;background:#f7f9fb;color:var(--text);transition:.15s}
+  .side-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px var(--primary-l)}
+  .side-search .clear-btn{position:absolute;right:22px;top:50%;transform:translateY(-50%);border:none;background:none;color:var(--sub);cursor:pointer;font-size:13px;padding:4px;line-height:1;display:none}
+  .side-search .clear-btn.show{display:inline}
+  .results{display:none;overflow-y:auto;max-height:calc(100vh - 430px);padding:0 10px 6px}
+  .results.show{display:block}
+  .results .rlabel{font-size:11px;color:var(--sub);padding:4px 8px 8px}
+  .result-item{padding:9px 12px;border-radius:10px;cursor:pointer;margin-bottom:2px}
+  .result-item:hover{background:var(--primary-l)}
+  .result-item .rs{font-size:10.5px;color:var(--primary);font-weight:600}
+  .result-item .rt{font-size:12.5px;color:var(--text);line-height:1.45;margin-top:2px;word-break:break-all}
+  .result-item .rm{font-size:11px;color:var(--sub);margin-top:2px}
+  .result-empty{padding:14px 8px;font-size:12px;color:var(--sub)}
+  .card.flash{animation:flashAnim 1.8s ease}
+  @keyframes flashAnim{0%,55%{box-shadow:0 0 0 3px var(--primary),var(--shadow-2)}100%{box-shadow:var(--shadow-1)}}
+  .nav{padding:4px 10px;display:flex;flex-direction:column;gap:2px}
+  .nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;border:none;background:none;border-radius:0 22px 22px 0;cursor:pointer;text-align:left;width:100%;color:var(--text)}
+  .nav-item .ico{font-size:20px;width:24px;text-align:center;flex:none}
+  .nav-item .nt{font-size:14px;font-weight:500;line-height:1.3}
+  .nav-item .ns{font-size:11px;color:var(--sub);margin-top:1px}
+  .nav-item.active{background:var(--primary-l);color:var(--primary-d)}
+  .nav-item.active .ns{color:var(--primary)}
+  .side-foot{margin-top:auto;padding:16px 20px;font-size:11px;color:var(--sub);border-top:1px solid var(--div)}
+
+  /* ===== 查找后关键字高亮 ===== */
+  mark.hl{background:#ffe082;color:#7a3e00;font-weight:800;border-radius:4px;padding:0 2px;margin:0 1px;
+    box-shadow:0 0 0 2px rgba(255,193,7,.35);animation:hlPulse 1.1s ease-in-out 3}
+  @keyframes hlPulse{
+    0%,100%{background:#ffe082;box-shadow:0 0 0 2px rgba(255,193,7,.35)}
+    50%{background:#ffca28;box-shadow:0 0 0 5px rgba(255,152,0,.45)}
+  }
+  mark.hl.sm{padding:0 1px;margin:0;border-radius:3px;box-shadow:none;animation:none;font-weight:700}
+  .hl-toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,16px);background:rgba(33,33,33,.92);
+    color:#fff;font-size:13px;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow-2);
+    opacity:0;pointer-events:none;transition:.22s;z-index:60;max-width:80vw;text-align:center}
+  .hl-toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* ===== 主区域 ===== */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+  /* 顶栏 App Bar */
+  .appbar{height:64px;background:var(--primary);color:#fff;display:flex;align-items:center;gap:16px;padding:0 24px;box-shadow:0 2px 4px rgba(0,0,0,.20);position:sticky;top:0;z-index:20}
+  .menu-btn{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:6px;border-radius:8px}
+  .appbar-title{font-size:19px;font-weight:600;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .appbar-spacer{flex:1}
+  .appbar-badge{font-size:12px;background:rgba(255,255,255,.18);border-radius:999px;padding:5px 12px;white-space:nowrap}
+
+  /* 内容区 */
+  .content{padding:24px;max-width:1180px;width:100%;margin:0 auto}
+
+  .sec-head{margin-bottom:20px}
+  .sec-head h2{font-size:22px;font-weight:600}
+  .sec-head .desc{font-size:13.5px;color:var(--sub);margin-top:5px;max-width:760px}
+
+  /* ===== 卡片网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+  .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-1);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;transition:box-shadow:.18s}
+  .card:hover{box-shadow:var(--shadow-2)}
+
+  .card-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pill{font-size:12px;font-weight:600;border-radius:16px;padding:4px 12px;white-space:nowrap}
+  .pill.new{background:var(--primary-l);color:var(--primary-d)}
+  .pill.old{background:var(--orange-l);color:var(--orange)}
+  .pill.term{background:#f1f3f5;color:var(--sub)}
+  .pill.tag{background:var(--purple-l);color:var(--purple)}
+
+  .card-title{font-size:15.5px;font-weight:700;line-height:1.45;word-break:break-word}
+
+  /* 金额 / 资费 */
+  .pkg-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .pkg-cap{font-size:12.5px;color:var(--sub);font-weight:600;letter-spacing:.04em}
+  .pkg-price{font-size:28px;font-weight:800;color:var(--red);line-height:1.15;word-break:break-all}
+  .pkg-price .paren{font-size:14px;color:var(--sub);font-weight:600;margin-left:2px}
+
+  /* 关键指标 */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+  .tier{border:1px solid var(--div);border-radius:10px;padding:12px 8px;text-align:center;background:#fcfdfe;min-width:0}
+  .tier .p{font-size:12px;font-weight:600;color:var(--sub);white-space:nowrap}
+  .tiers .tier .d{margin-top:5px;font-size:14.5px;font-weight:700;color:var(--text);white-space:normal;word-break:break-word}
+
+  /* 卡片内表格 */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--div);border-radius:10px;background:#fff}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:440px}
+  .tbl th{background:#f2f6fb;color:var(--primary-d);font-weight:600;padding:8px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--div)}
+  .tbl td{padding:8px 10px;border-bottom:1px solid rgba(0,0,0,.06);vertical-align:top;line-height:1.55;word-break:break-word}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl td.k{font-weight:700;color:var(--primary-d);white-space:nowrap}
+  .tbl td .mut{color:var(--sub)}
+
+  /* 权益 / 说明块 */
+  .benes{display:flex;flex-direction:column;gap:8px}
+  .bene{border:1px solid var(--div);border-radius:10px;padding:10px 12px;background:#fcfdfe}
+  .bene.focus{border-color:var(--gold-b);background:var(--gold-l)}
+  .bene-t{font-size:12.5px;font-weight:700;color:var(--primary-d);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .bene.focus .bene-t{color:var(--gold-d)}
+  .bene-d{font-size:13px;margin-top:5px;line-height:1.65;word-break:break-word}
+  .bene-d .line{display:flex;gap:4px;align-items:flex-start}
+  .bene-d .line+.line{margin-top:4px}
+  .bene-d .lk{flex:none;color:var(--sub);font-weight:600}
+
+  /* 附加 chips */
+  .cond{display:flex;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--div);padding-top:14px}
+  .cond .c{font-size:12.5px;color:var(--sub);background:#f5f6f8;border-radius:8px;padding:7px 12px}
+  .cond .c.lab{background:var(--primary-l);color:var(--primary-d);font-weight:600}
+  .cond .c b{color:var(--text)}
+
+  /* 分区级说明面板（置于卡片下方，如通用规则） */
+  .sec-note{background:var(--orange-l);border:1px solid rgba(237,108,2,.22);border-radius:var(--radius);padding:14px 18px;margin:18px auto 0;max-width:880px}
+  .sec-note h3{font-size:14px;font-weight:700;color:var(--orange);margin:0 0 6px}
+  .sec-note p{font-size:13px;line-height:1.75;margin:3px 0;color:var(--text);word-break:break-word}
+
+  /* ===== 术语说明 ===== */
+  .notes{margin-top:32px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-1);padding:22px 24px}
+  .notes h2{font-size:16px;margin-bottom:14px}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .notes ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px 24px}
+  .notes li{font-size:13px;color:var(--sub)}
+  .notes li b{color:var(--text)}
+
+  /* 抽屉遮罩（手机端） */
+  .scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25}
+
+  /* ===== 平板 ===== */
+  @media(max-width:960px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+  }
+
+  /* ===== 手机：抽屉折叠为汉堡菜单 ===== */
+  @media(max-width:760px){
+    .drawer{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform:.22s ease;box-shadow:var(--shadow-2)}
+    .drawer.open{transform:translateX(0)}
+    .scrim.show{display:block}
+    .menu-btn{display:inline-flex}
+    .content{padding:16px 14px 40px}
+    .appbar{padding:0 14px;gap:10px;height:58px}
+    .appbar-title{font-size:16px}
+    .appbar-badge{display:none}
+    .grid{grid-template-columns:1fr;gap:14px}
+    .card{padding:16px}
+    .tiers{grid-template-columns:repeat(2,1fr)}
+    .pkg-price{font-size:24px}
+    .notes{padding:16px}
+    .notes ul{grid-template-columns:1fr}
+    .sec-head h2{font-size:19px}
+    .results{max-height:38vh}
+    .tbl{min-width:400px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- 侧边导航 -->
+  <aside class="drawer" id="drawer">
+    <div class="brand">
+      <div class="logo">🗂️</div>
+      <div>
+        <div class="bt">湖南电信</div>
+        <div class="bs">2026新套餐体系</div>
+      </div>
+    </div>
+    <div class="side-label">分类筛选</div>
+    <div class="side-chips" id="groupChips"></div>
+    <div class="side-label">关键字查找</div>
+    <div class="side-search">
+      <input id="searchInput" type="text" placeholder="档位 / 资费 / 副卡 / 云电视 / 二宽…" autocomplete="off">
+      <button class="clear-btn" id="searchClear" aria-label="清空查找">✕</button>
+    </div>
+    <div class="results" id="searchResults"></div>
+    <div class="side-label" id="navLabel">套餐体系分类</div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="side-foot">资费均为月费口径 · 「—」「/」表示未含或按场景执行 · 以官方受理为准</div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- 主区域 -->
+  <div class="main">
+    <header class="appbar">
+      <button class="menu-btn" id="menuBtn" aria-label="菜单">☰</button>
+      <div class="appbar-title" id="appbarTitle"></div>
+      <div class="appbar-spacer"></div>
+      <div class="appbar-badge" id="appbarBadge"></div>
+    </header>
+
+    <div class="content">
+      <div class="sec-head">
+        <h2 id="secTitle"></h2>
+        <div class="desc" id="secDesc"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="sec-note" id="secNote" hidden></div>
+
+      <section class="notes">
+        <h2>术语与口径说明</h2>
+        <div class="legend">
+          <span class="pill new">单产品套餐</span>
+          <span class="pill tag">融合套餐</span>
+          <span class="pill old">云电视</span>
+          <span class="pill term">二宽政策</span>
+        </div>
+        <ul>
+          <li><b>套餐档位：</b>均按月费口径（元/月）；括号内为构成或优惠方式（如 39＝5G畅享59元-20元优惠）。</li>
+          <li><b>套内语音 / 叠加促销语音 / 语音合计：</b>单位分钟；语音合计＝套内＋叠加促销＋随翼选必选（以各卡片标注为准）。</li>
+          <li><b>随翼选：</b>优惠 / 必选 / 可选额度（元）；必选额度构成为原文标注（如 20云电视＋20FTTR）；「待核实」「必须收费」均为原文口径。</li>
+          <li><b>终端合约36期（大直降）：</b>终端补贴总额，括号内为分月金额（如 1080元＝30元/月×36）。</li>
+          <li><b>副卡规则：</b>「入网12个月以内第1、2张不收费，第3、4张每张10元/月；12个月及以上可加装4张不收费副卡」为本套餐体系通用口径，个别档位另有标注。</li>
+          <li><b>云电视：</b>资费为云电视月费；「是否云盒」表示是否需配备云电视云盒；调测费随销售品信息标注；销售品编码整理自政策资料，以官方受理系统为准。</li>
+          <li><b>二宽：</b>第二条宽带；本地二宽按适配套餐定价，异地二宽不分套餐执行统一资费；200M优惠各档加装云电视均为20元/月。</li>
+          <li><b>泛渠道：</b>指中国电信合作的第三方销售平台（如菜鸟驿站、体育馆等）。</li>
+          <li><b>商机单：</b>10000号受理的工单类型，部分业务须在工单内注明办理内容与用户住址。</li>
+          <li><b>「—」/「/」：</b>表示该档未包含此项，或按具体办理场景执行。</li>
+          <li><b>内容来源：</b>本页为个人收集、整理的资料，如与官方内容不符，请以官方为准。</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ 数据（单产品套餐 / 融合套餐 / 云电视 / 二宽政策） ============ */
+
+/* 云电视销售品常用条目 */
+const S4K = "1177912 201607-4K超高清20元/月";
+const JG200 = "9019776 机顶盒代管包2021版（200元调测费）";
+const JG100 = "9019776 机顶盒代管包2021版（100元调测费）";
+const JG105 = "9019776 202105-机顶盒代管包2021版（100元调测费）";
+const TVSY = "9314533 云电视基础版（随翼选）";
+const TVJJ = "9314600 云电视基础版（加装）";
+const VIP = "9309629 云电视VIP权益开通包";
+const YH10 = "9011632 202604-云电视优惠10元包（非云盒版）";
+const TVBASE = "9309617 云电视基础包";
+const YHHE = "9314542 202603-云电视云盒代管包（200元调测费）";
+const HEYUE = "1184100 月付型云电视云盒版合约（随翼选）";
+
+/* 云电视办理渠道常用文案 */
+const CH_ITV = "1、已有ITV升级云电视：1）中国电信APP\n2）微信服务号/微信小程序：湖南电信\n3）代客下单\n4）营业厅\n2、新装云电视：营业厅";
+const CH_EXT = "1、10000号商机单\n2、淘宝、京东、抖音等外部合作平台的官方旗舰店及合作的宽带新装包年宽带的页面下单";
+
+const SECTIONS = [
+  {
+    id:"single", group:"single", icon:"📱", title:"单产品套餐",
+    sub:"档位明细 · 适用范围与渠道",
+    desc:"在售单产品套餐：2026版5G畅享、5G-A、39-49元档、孝心卡、爱心卡、畅玩卡、无忧卡、标准版星卡、暖心卡等，含适用范围、受理渠道与档位明细。",
+    rows:[
+      {title:"（全省）5G畅享单产品套餐（39-49元）",
+       pills:[{t:"新用户",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计"],rows:[
+         ["39\n（5G畅享59元-20元优惠）","通用流量：20GB（套内10GB+10GB活动流量）\n定向流量：30GB","100","100"],
+         ["49\n（5G畅享59元-10元优惠）","通用流量：50GB（套内10GB+40GB活动流量）\n定向流量：30GB","100","100"]
+       ]},
+       benes:[
+         {t:"受理渠道",lines:[["渠道","营业厅；泛渠道"],["泛渠道","指中国电信合作的第三方销售平台（如菜鸟驿站、体育馆等）"]]},
+         {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.15元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）5G畅享单产品套餐（2026版）",
+       pills:[{t:"新老用户",c:"new"}],
+       table:{cols:["档位（元/月）","套内流量","套内语音","叠加促销语音","语音合计","副卡"],rows:[
+         ["59","通用流量 10GB","100","/","100","/"],
+         ["79","通用流量 20GB","100","/","100","2张"],
+         ["99","通用流量 40GB","150","/","150","2张"],
+         ["139","通用流量 60GB","200","/","200","4张"],
+         ["169","通用流量 80GB","300","100","400","4张"]
+       ]},
+       benes:[
+         {t:"受理渠道",lines:[["渠道","营业厅、10000号（商机单）"],["说明","张家界不能通过10000号（商机单）变更79元档"]]},
+         {t:"套外资费",lines:[["59元档","流量5元/GB · 通话0.15元/分钟"],["79、99元档","流量5元/GB · 通话0.1元/分钟"],["139、169元档","流量3元/GB · 通话0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）5G-A单产品套餐",
+       pills:[{t:"新老用户",c:"new"}],
+       table:{cols:["档位（元/月）","套内流量","套内语音","叠加促销语音","语音合计"],rows:[
+         ["199","通用流量 120GB","1000","/","1000"],
+         ["239","通用流量 140GB","1000","/","1000"],
+         ["299","通用流量 180GB","1500","/","1500"],
+         ["399","通用流量 240GB","2000","/","2000"]
+       ]},
+       benes:[
+         {t:"办理规则",lines:[["新装 · 10000号","商机单→订购类→新装→新装天翼；需在工单内注明是办理单卡及对应套餐档次，地址填用户现在居住的地址"],["新装 · 中国电信APP","查询办理→个人→全部服务→业务办理→套餐→5G-A套餐"],["新装 · 营业厅","营业厅"],["新装 · 营销政策","2025-2026岁末年初营销政策：营业厅"],["变更","营业厅、10000号（商机单）"]]},
+         {t:"副卡规则",d:"可加装4张副卡：1、主卡入网12个月以内：加装第1、2张不收费；加装第3、4张每张收10元/月；2、主卡入网12个月及以上：可加装4张不收费的副卡。"},
+         {t:"套外资费",lines:[["流量","3元/GB"],["通话","0.15元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（集团）孝心卡套餐",
+       pills:[{t:"老年人专享",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计"],rows:[
+         ["19","通用流量：2GB\n定向流量：10GB","100","100"]
+       ]},
+       benes:[
+         {t:"适用范围",d:"老年人（原则上60岁及以上）办理，委托或授权子女代为办理。"},
+         {t:"营业厅新装入网相关说明",lines:[["湘潭","限1-3级自营营业厅办理"],["郴州","2022年3月18日起，限1-3级自营营业厅办理，且外地身份证无法办理"],["怀化","不主动推荐"]]},
+         {t:"受理渠道",d:"营业厅"},
+         {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）爱心卡套餐",
+       pills:[{t:"残疾人专享",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计"],rows:[
+         ["19（流量版）","通用流量：5GB\n定向流量：30GB","50","50"],
+         ["19（语音版）","通用流量：2GB\n定向流量：10GB","400","400"]
+       ]},
+       benes:[
+         {t:"适用范围",d:"限视力、听力、言语三类残疾人办理，须在湖南省残疾人联合会进行登记（残疾人优惠目标客户清单由残联提供，办理时如提示未满足办理条件，可引导客户去残联进行身份资格确认）。"},
+         {t:"说明",lines:[["郴州","2022年3月18日起限1-3级自营营业厅办理，且外地身份证无法办理"],["湘潭","不主动宣传"]]},
+         {t:"受理渠道",d:"营业厅"},
+         {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）畅玩卡套餐",
+       pills:[{t:"全省用户（除怀化外）",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计","副卡","功能费"],rows:[
+         ["39","定向流量：30GB","/","/","2张","10元/张/月"],
+         ["59","通用流量：5GB\n定向流量：30GB","100","100","2张","10元/张/月"]
+       ]},
+       benes:[
+         {t:"受理渠道",lines:[["新装","营业厅"],["变更","营业厅、10000号（商机单）"]]},
+         {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）电信无忧卡",
+       pills:[{t:"兜底保障",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容"],rows:[
+         ["5","通用流量：200M"]
+       ]},
+       benes:[
+         {t:"适用范围",lines:[["娄底","分场景受理，如未成年人、高危入网人群等不具备开卡条件或一进厅就要求开通多张无忧卡的不予受理；降档或拆机时不直接推荐5元无忧卡，详见（娄底）降档或拆机时不直接推荐5元无忧卡和可上门回收终端的通知"],["怀化、湘潭","不主动推荐"],["其余本地网","新老用户均可办理"]]},
+         {t:"受理渠道",lines:[["新装 · 线上","拼多多店铺（湖南电信官方旗舰店）、抖音店铺（中国电信湖南旗舰店）、中国电信APP、微信小程序「湖南电信」、微信服务号「湖南电信」"],["新装 · 线下","1-3级营业厅"],["变更","10000号、1-3级营业厅"],["说明","线上变更无忧卡，参照（全省）门户营销专区受理规范；或升级处理情况，经审核确认后生成商机单"]]},
+         {t:"套外资费",lines:[["流量","0-1GB：0.02元/M，折算20.48元/GB；1GB-5GB：0.01元/M，折算10.24元/GB；5GB以上：0.005元/M，折算5.12元/GB"],["超出资费示例","如用户当月超出6GB流量，则相应流量费用为1024*0.02+4*1024*0.01+1024*0.005=66.56元"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（全省）标准版星卡套餐",
+       pills:[{t:"线上渠道为主",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计","副卡","功能费"],rows:[
+         ["10\n（由无忧卡5元+无忧卡专属5元加装包组成）","通用流量：1224MB（200MB+1GB）","100","100","/","—"],
+         ["39","通用流量：5GB\n定向流量：30GB","/","/","2张","10元/月/张"],
+         ["59","通用流量：20GB\n定向流量：30GB","/","/","2张","10元/月/张"]
+       ]},
+       benes:[
+         {t:"适用范围",d:"电信C网用户均可办理，用户已有号码变更套餐不能享受促销优惠活动，只能变更为标准版星卡套餐。"},
+         {t:"说明",d:"长沙、娄底不能变更为59元档标准版星卡套餐。怀化可以通过线上渠道办理变更39元档标准版星卡套餐，但是不能通过营业厅办理变更59元档标准版星卡套餐。"},
+         {t:"受理渠道",lines:[["新装","主要为线上渠道推广"],["变更","10000号、1-3级营业厅"]]},
+         {t:"10元档适用范围",lines:[["限制地市","长沙、湘潭、娄底：不能办理"],["怀化","不主动推荐"],["其余本地网","新老用户均可办理"]]},
+         {t:"10元档受理渠道",lines:[["新装","1-3级营业厅"],["变更","10000号、1-3级营业厅"],["说明","线上变更无忧卡，参照（全省）门户营销专区受理规范；或升级处理情况，经审核确认后生成商机单"]]},
+         {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+       ]},
+      {title:"（集团）天翼暖心卡套餐",
+       pills:[{t:"中国电信用户",c:"new"}],
+       table:{cols:["档位（元/月）","套餐包含内容","套内语音","语音合计","副卡","功能费"],rows:[
+         ["39","通用流量：5GB\n定向流量：30GB","/","/","2张","10元/张/月"],
+         ["59","通用流量：10GB\n定向流量：30GB","100","100","2张","10元/张/月"],
+         ["79","通用流量：15GB\n定向流量：30GB","200","200","2张","10元/张/月"]
+       ]},
+       benes:[
+         {t:"说明",d:"邵阳不能变更为本套餐。"},
+         {t:"受理渠道",lines:[["新装","信息流、营业厅"],["变更","营业厅"]]},
+          {t:"套外资费",lines:[["流量","5元/GB"],["通话","0.1元/分钟"],["短/彩信","0.1元/条"]]}
+        ]}
+      ]
+    },
+  {
+    id:"fusion2026", group:"fusion", icon:"🏡", title:"融合 · 2026版5G畅享",
+    sub:"139 / 169 档",
+    desc:"2026版5G畅享融合套餐：139 / 169 档，含语音与流量构成、副卡及功能费、终端合约36期（大直降）与随翼选额度。",
+    rows:[
+      {title:"2026版5G畅享融合套餐 · 139档",
+       pills:[{t:"2026版5G畅享",c:"new"}],
+       price:"139", priceCap:"套餐档次 · 元/月",
+       specs:[["语音合计","500分钟"],["套内流量","60GB"],["流量合计","65GB"],["宽带","1000M"]],
+       benes:[
+         {t:"语音构成",d:"套内语音 200分钟 · 叠加促销语音 — · 随翼选必选语音 300分钟"},
+         {t:"流量构成",d:"套内流量 60GB · 随翼选可选流量 5GB"},
+         {t:"副卡及功能费",d:"可加装4张副卡，主卡入网12个月以内：加装第1、2张不收费；加装第3、4张每张收10元/月。"},
+         {t:"终端合约36期（大直降）",d:"—"},
+         {t:"随翼选额度",lines:[["优惠额度","50元"],["必选额度","30（20云电视+0语音包+10待核实）"],["可选额度","20元"]]}
+       ]},
+      {title:"2026版5G畅享融合套餐 · 169档",
+       pills:[{t:"2026版5G畅享",c:"new"}],
+       price:"169", priceCap:"套餐档次 · 元/月",
+       specs:[["语音合计","700分钟"],["套内流量","80GB"],["流量合计","85GB"],["宽带","1000M（FTTR）"]],
+       benes:[
+         {t:"语音构成",d:"套内语音 300分钟 · 叠加促销语音 100分钟 · 随翼选必选语音 300分钟"},
+         {t:"流量构成",d:"套内流量 80GB · 随翼选可选流量 5GB"},
+         {t:"副卡及功能费",d:"可加装4张副卡，主卡入网12个月以内：加装第1、2张不收费；加装第3、4张每张收10元/月。"},
+         {t:"终端合约36期（大直降）",d:"1080元（30元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","60元"],["必选额度","50（20云电视+20FTTR（不含流量）+0语音包+10待核实）"],["可选额度","10元"]]}
+       ]}
+    ]
+  },
+  {
+    id:"fusion5ga", group:"fusion", icon:"🚀", title:"融合 · 5G-A",
+    sub:"199-399档 · 通用规则在页尾",
+    desc:"5G-A融合套餐：199-399档，各档含流量构成、随翼选额度、优享号码、网络权益与卫星功能；通用规则（副卡、应用权益）见卡片下方橙色说明面板。",
+    noteTitle:"通用规则（全套餐适用）",
+    note:[
+      "副卡规则：可加装4张副卡，主卡入网12个月以内：加装第1、2张不收费；加装第3、4张每张收10元/月。",
+      "应用权益：漏话提醒、智能应答、安全管家、天翼智铃、天翼防骚扰、天翼云盘。"
+    ],
+    rows:[
+      {title:"5G-A融合套餐 · 199元档",
+       pills:[{t:"5G-A融合",c:"new"}],
+       price:"199", priceCap:"套餐档次 · 元/月",
+       specs:[["套内语音","1000分钟"],["套内流量","100GB"],["流量合计","125GB"],["宽带","1000M（FTTR）"]],
+       benes:[
+         {t:"流量构成",d:"套内流量 100GB · 主套餐叠加促销流量 20GB · 随翼选流量 5GB（可选权益）"},
+         {t:"终端合约36期（大直降）",d:"1440元（40元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","50元"],["必选额度","40（20云电视+20FTTR（不含流量））"],["可选额度","10元"]]},
+         {t:"优享号码权益",d:"—"},
+         {t:"网络权益（上下行峰值速率）",d:"最高下行2Gbps · 最高上行200Mbps"},
+         {t:"卫星功能",d:"手机直连卫星功能，10分钟语音，10条短信"}
+       ]},
+      {title:"5G-A融合套餐 · 219元档",
+       pills:[{t:"5G-A融合",c:"new"}],
+       price:"219（199档主套餐+必选20元收费随翼选可选权益）", priceCap:"套餐档次 · 元/月",
+       specs:[["套内语音","1000分钟"],["套内流量","100GB"],["流量合计","125GB"],["宽带","2000M（FTTR）"]],
+       benes:[
+         {t:"流量构成",d:"套内流量 100GB · 主套餐叠加促销流量 20GB · 随翼选流量 5GB（可选权益）"},
+         {t:"终端合约36期（大直降）",d:"1800元（50元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","70（50+20必须收费）"],["必选额度","50（20云电视+20FTTR（不含流量）+10待核实）"],["可选额度","20（必须收费）"]]},
+         {t:"优享号码权益",d:"可享2级优享号码"},
+         {t:"网络权益（上下行峰值速率）",d:"最高下行2Gbps · 最高上行200Mbps"},
+         {t:"卫星功能",d:"手机直连卫星功能，10分钟语音，10条短信"}
+       ]},
+      {title:"5G-A融合套餐 · 249元档",
+       pills:[{t:"5G-A融合",c:"new"}],
+       price:"249（239档主套餐+必选10元收费随翼选可选权益）", priceCap:"套餐档次 · 元/月",
+       specs:[["套内语音","1000分钟"],["套内流量","120GB"],["流量合计","165GB"],["宽带","2000M（FTTR）"]],
+       benes:[
+         {t:"流量构成",d:"套内流量 120GB · 主套餐叠加促销流量 40GB · 随翼选流量 5GB（可选权益）"},
+         {t:"终端合约36期（大直降）",d:"2160元（60元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","60（50+10必须收费）"],["必选额度","50（20云电视+20FTTR（不含流量）+10待核实）"],["可选额度","10（必须收费）"]]},
+         {t:"优享号码权益",d:"—"},
+         {t:"网络权益（上下行峰值速率）",d:"最高下行2Gbps · 最高上行200Mbps"},
+         {t:"卫星功能",d:"手机直连卫星功能，15分钟语音，15条短信"}
+       ]},
+      {title:"5G-A融合套餐 · 299元档",
+       pills:[{t:"5G-A融合",c:"new"}],
+       price:"299", priceCap:"套餐档次 · 元/月",
+       specs:[["套内语音","1500分钟"],["套内流量","150GB"],["流量合计","200GB"],["宽带","2000M（FTTR）"]],
+       benes:[
+         {t:"流量构成",d:"套内流量 150GB · 主套餐叠加促销流量 50GB"},
+         {t:"终端合约36期（大直降）",d:"2700元（75元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","50元"],["必选额度","40（20云电视+20FTTR+10待核实）"],["可选额度","—"]]},
+         {t:"优享号码权益",d:"可享3级优享号码"},
+         {t:"网络权益（上下行峰值速率）",d:"最高下行2Gbps · 最高上行300Mbps"},
+         {t:"卫星功能",d:"手机直连卫星功能，20分钟语音，20条短信"}
+       ]},
+      {title:"5G-A融合套餐 · 399元档",
+       pills:[{t:"5G-A融合",c:"new"}],
+       price:"399", priceCap:"套餐档次 · 元/月",
+       specs:[["套内语音","2000分钟"],["套内流量","200GB"],["流量合计","300GB"],["宽带","2000M（FTTR）"]],
+       benes:[
+         {t:"流量构成",d:"套内流量 200GB · 主套餐叠加促销流量 100GB"},
+         {t:"终端合约36期（大直降）",d:"3600元（100元/月）"},
+         {t:"随翼选额度",lines:[["优惠额度","—"],["必选额度","—"],["可选额度","—"]]},
+         {t:"优享号码权益",d:"优享号码权益"},
+         {t:"网络权益（上下行峰值速率）",d:"最高下行3Gbps · 最高上行400Mbps"},
+         {t:"卫星功能",d:"手机直连卫星功能，30分钟语音，30条短信"}
+       ]}
+    ]
+  },
+  {
+    id:"tv", group:"tv", icon:"📺", title:"云电视",
+    sub:"25个场景 · 资费与销售品",
+    desc:"（全省）天翼高清云电视 · 资费标准（详情版），标注（全省）无套餐高清云电视：按新装 / 加包 / 续约 / 存量与迁转 / 单转融 / 非融合 / 二·三台等场景，整理云电视资费、是否云盒、销售品信息与办理渠道。",
+    rows:[
+      {title:"79新装（商品）",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"简单融合",c:"tag"}],
+       price:"10（原价20元/月，通过随翼选优惠10元）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG200],["",TVSY],["",VIP],["","1132767 202512-79及以上随翼选20元权益优惠（区域版）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"99新装融合（商品）",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"简单融合",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG200],["",TVSY],["",VIP],["","9313865 202512-99及以上随翼选30元权益优惠（区域版）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"139融合新装",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"简单融合",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG200],["",TVSY],["",VIP],["","9313868 202512-随翼选50元权益优惠（139档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"169及以上融合新装",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"简单融合",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["",TVBASE],["",YHHE],["",HEYUE],["","9313869 202512-随翼选60元权益优惠（169档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"139加装500M自由融合宽带包",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"自由融合",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVSY],["",VIP],["","9012288 202604-随翼选20元权益优惠（单产品）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"169及以上加装1000M自由融合宽带包",
+       pills:[{t:"第一台",c:"new"},{t:"新装",c:"term"},{t:"自由融合",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["",TVBASE],["",YHHE],["",HEYUE],["","9012288 202604-随翼选20元权益优惠（单产品）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"FTTR（20元）+云电视（20元）",
+       pills:[{t:"第一台",c:"new"},{t:"加包",c:"term"},{t:"融合类",c:"tag"},{t:"礼包销售30元/月",c:"old"}],
+       price:"10", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["","9313128 202511-129档及以上FTTR提速20元合约"],["",S4K],["",JG100],["",TVJJ],["",VIP],["",YH10]]},
+         {t:"办理渠道",lines:[["1","10000号代客下单"],["2","营业厅"]]}
+       ]},
+      {title:"智屏（30元）+云电视（20元）",
+       pills:[{t:"第一台",c:"new"},{t:"加包",c:"term"},{t:"融合类",c:"tag"},{t:"礼包销售30元/月",c:"old"}],
+       price:"10", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["","9314508 202602-30元天翼智屏云好看权益包（随翼选）"],["","9312295 智屏权益优惠10元包"],["",S4K],["",JG100],["",TVJJ],["",VIP],["",YH10]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"FTTR（20元）+智屏（30元）+云电视（20元）",
+       pills:[{t:"第一台",c:"new"},{t:"加包",c:"term"},{t:"融合类",c:"tag"},{t:"礼包销售50元/月",c:"old"}],
+       price:"10", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["","9313128 202511-129档及以上FTTR提速20元合约"],["","9314508 202602-30元天翼智屏云好看权益包（随翼选）"],["","9312295 智屏权益优惠10元包"],["",S4K],["",JG100],["",TVJJ],["",VIP],["",YH10]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"不升档+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"加包",c:"term"},{t:"融合类",c:"tag"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP]]},
+         {t:"办理渠道",d:CH_ITV}
+       ]},
+      {title:"到期平迁+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"续约",c:"term"},{t:"平迁",c:"tag"}],
+       price:"10（原价20元，通过加装10元优惠包优惠10元）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP],["",YH10]]},
+         {t:"办理渠道",d:CH_ITV}
+       ]},
+      {title:"到期升档+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"续约",c:"term"},{t:"升档",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVSY],["",VIP],["",YH10],["","9313108 202511-随翼选存量30元权益优惠（169/199档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"到期升1档+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"存量",c:"term"},{t:"升档",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVSY],["",VIP],["",YH10],["","9313108 202511-随翼选存量30元权益优惠（169/199档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"169/199无约迁转169/199新套餐",
+       pills:[{t:"第一台",c:"new"},{t:"无约迁转",c:"term"},{t:"平迁",c:"tag"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP]]},
+         {t:"办理渠道",d:CH_ITV}
+       ]},
+      {title:"无约加档升一档+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"无约迁转",c:"term"},{t:"升一档",c:"tag"}],
+       price:"10（原价20元，通过加装10元优惠包优惠10元）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP],["",YH10]]},
+         {t:"办理渠道",d:CH_ITV}
+       ]},
+      {title:"129以下融合升至139融合",
+       pills:[{t:"第一台",c:"new"},{t:"无约迁转",c:"term"},{t:"升一档",c:"tag"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP]]},
+         {t:"办理渠道",d:CH_ITV}
+       ]},
+      {title:"无约加档升二档+云电视",
+       pills:[{t:"第一台",c:"new"},{t:"无约迁转",c:"term"},{t:"升两档",c:"tag"}],
+       price:"不收费（原价20元/月，通过随翼选优惠）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVSY],["",VIP],["",YH10],["","9313108 202511-随翼选存量30元权益优惠（169/199档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"同新装简单融合，升至139融合",
+       pills:[{t:"第一台",c:"new"},{t:"单转融",c:"term"},{t:"单宽升融合",c:"tag"}],
+       price:"不收费", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVSY],["",VIP],["","9313868 202512-随翼选50元权益优惠（139档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"同新装简单融合，升至169及以上融合",
+       pills:[{t:"第一台",c:"new"},{t:"单转融",c:"term"},{t:"单宽升融合",c:"tag"}],
+       price:"不收费", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["",TVBASE],["",YHHE],["",HEYUE],["","9313869 202512-随翼选60元权益优惠（169档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"同无约迁转",
+       pills:[{t:"第一台",c:"new"},{t:"单转融",c:"term"},{t:"无约单升融合",c:"tag"}],
+       price:"/", priceCap:"云电视资费",
+       specs:[["是否云盒","/"]],
+       benes:[
+         {t:"销售品信息",lines:[["","9313869 202512-随翼选60元权益优惠（169档）"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"单宽+云电视（包月）",
+       pills:[{t:"非融合类",c:"new"},{t:"新装/存量",c:"term"}],
+       price:"20（包月）", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"单宽+云电视（年包）",
+       pills:[{t:"非融合类",c:"new"},{t:"新装/存量",c:"term"}],
+       price:"240（年包）", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["","9314174 202511-云电视240元包年包"],["","9309617 202503-云电视基础包-数生"],["","9309687 202503-云电视机顶盒代管包（根据用户是否需要代管设备选择）"],["","1133685 iTV调试费优惠"],["",S4K],["",TVJJ],["",VIP],["",JG105],["","9315915 202609-云电视基础版（加装）240元包年包-电渠"]]},
+         {t:"办理渠道",d:CH_EXT}
+       ]},
+      {title:"二宽+云电视",
+       pills:[{t:"非融合类",c:"new"},{t:"新装/存量",c:"term"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","否"]],
+       benes:[
+         {t:"销售品信息",lines:[["",S4K],["",JG100],["",TVJJ],["",VIP]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"加装二、三台云电视（一宽、二宽均可加装）",
+       pills:[{t:"二、三台云电视",c:"new"},{t:"融合、二宽",c:"term"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["",TVBASE],["",YHHE],["","9314588 云电视VIP版"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]},
+      {title:"加装二、三台云电视（单宽）",
+       pills:[{t:"二、三台云电视",c:"new"},{t:"单宽",c:"term"}],
+       price:"20", priceCap:"云电视资费",
+       specs:[["是否云盒","是"]],
+       benes:[
+         {t:"销售品信息",lines:[["",TVBASE],["",YHHE],["","9314588 云电视VIP版"]]},
+         {t:"办理渠道",d:"营业厅"}
+       ]}
+    ]
+  },
+  {
+    id:"bb-std", group:"bb", icon:"🌐", title:"二宽 · 标准资费",
+    sub:"300M-1000M 本地/异地",
+    desc:"300M-1000M标准本地/异地二宽资费：本地二宽按适配套餐分档定价；异地二宽不分套餐执行统一资费（300M 30元/月、500M 40元/月）。",
+    rows:[
+      {title:"新5C畅享139/169档",
+       pills:[{t:"本地二宽",c:"new"},{t:"适配套餐",c:"term"}],
+       table:{cols:["宽带速率","本地二宽资费（元/月）"],rows:[
+         ["500M","30"],["1000M","40"]
+       ]},
+       benes:[
+         {t:"异地二宽",d:"统一资费：300M 30元/月；500M 40元/月"}
+       ]},
+      {title:"新老5G-A融合199元档及以上",
+       pills:[{t:"本地二宽",c:"new"},{t:"适配套餐",c:"term"}],
+       table:{cols:["宽带速率","本地二宽资费（元/月）"],rows:[
+         ["500M","10"],["1000M","20"]
+       ]},
+       benes:[
+         {t:"异地二宽",d:"统一资费：300M 30元/月；500M 40元/月"}
+       ]},
+      {title:"新老套餐129元及以上",
+       pills:[{t:"本地二宽",c:"new"},{t:"适配套餐",c:"term"}],
+       table:{cols:["宽带速率","本地二宽资费（元/月）"],rows:[
+         ["300M","30"],["500M","40"],["1000M","50"]
+       ]},
+       benes:[
+         {t:"说明",d:"老套餐需在网6个月及以上。"},
+         {t:"异地二宽",d:"统一资费：300M 30元/月；500M 40元/月"}
+       ]}
+    ]
+  },
+  {
+    id:"bb-sale", group:"bb", icon:"💰", title:"二宽 · 200M优惠",
+    sub:"1元 / 10元 · 限地市",
+    desc:"200M本地二宽优惠政策：1元 / 10元两档，各档加装云电视均为20元/月，适用地市有限制。",
+    rows:[
+      {title:"200M本地二宽 · 1元/月（5G-A融合及199元档老融合）",
+       pills:[{t:"200M本地二宽",c:"new"}],
+       price:"1元/月", priceCap:"月基本费",
+       benes:[
+         {t:"适配套餐",lines:[["①","办理5G-A融合199元档及以上新入网用户办理"],["②","办理199元及以上老融合套餐用户，同时需要具备这两个条件：老版套餐及二宽均在网6个月及以上"]]},
+         {t:"适用地市",d:"怀化、邵阳、张家界不参与；株洲不主动宣传"}
+       ],
+       cond:["加装云电视","20元/月"]},
+      {title:"200M本地二宽 · 1元/月（5G融合199档及以上加装）",
+       pills:[{t:"200M本地二宽",c:"new"}],
+       price:"1元/月", priceCap:"月基本费",
+       benes:[
+         {t:"适配套餐",d:"5G融合套餐199档及以上用户加装"},
+         {t:"适用地市",d:"限长沙、益阳、自治州、岳阳、娄底办理"}
+       ],
+       cond:["加装云电视","20元/月"]},
+      {title:"200M本地二宽 · 10元/月（169元档及以上老融合）",
+       pills:[{t:"200M本地二宽",c:"new"}],
+       price:"10元/月", priceCap:"月基本费",
+       benes:[
+         {t:"适配套餐",d:"办理169元及以上老融合套餐用户，同时需要具备这两个条件：老版套餐及二宽均在网6个月及以上"},
+         {t:"适用地市",d:"限岳阳169元档及以上融合套餐办理"}
+       ],
+       cond:["加装云电视","20元/月"]}
+    ]
+  }
+];
+
+const GROUPS = [
+  {id:"all", label:"全部"},
+  {id:"single", label:"单产品套餐"},
+  {id:"fusion", label:"融合套餐"},
+  {id:"tv", label:"云电视"},
+  {id:"bb", label:"二宽政策"}
+];
+
+let activeSec = SECTIONS[0].id;
+let activeGroup = "all";
+let searchQ = "";
+
+const drawerEl = document.getElementById("drawer");
+const scrimEl = document.getElementById("scrim");
+const sideNavEl = document.getElementById("sideNav");
+const appbarTitleEl = document.getElementById("appbarTitle");
+const appbarBadgeEl = document.getElementById("appbarBadge");
+const secTitleEl = document.getElementById("secTitle");
+const secDescEl = document.getElementById("secDesc");
+const gridEl = document.getElementById("grid");
+const secNoteEl = document.getElementById("secNote");
+const groupChipsEl = document.getElementById("groupChips");
+const searchInputEl = document.getElementById("searchInput");
+const searchClearEl = document.getElementById("searchClear");
+const searchResultsEl = document.getElementById("searchResults");
+const navLabelEl = document.getElementById("navLabel");
+
+function openDrawer(){ drawerEl.classList.add("open"); scrimEl.classList.add("show"); }
+function closeDrawer(){ drawerEl.classList.remove("open"); scrimEl.classList.remove("show"); }
+document.getElementById("menuBtn").onclick = openDrawer;
+scrimEl.onclick = closeDrawer;
+
+function visibleSections(){
+  return activeGroup==="all" ? SECTIONS : SECTIONS.filter(s=>s.group===activeGroup);
+}
+
+function renderNav(){
+  sideNavEl.innerHTML = visibleSections().map(s=>`
+    <button class="nav-item ${s.id===activeSec?"active":""}" data-id="${s.id}">
+      <span class="ico">${s.icon}</span>
+      <span><div class="nt">${s.title}</div><div class="ns">${s.sub}</div></span>
+    </button>`).join("");
+  sideNavEl.querySelectorAll(".nav-item").forEach(n=>{
+    n.onclick=()=>{ activeSec=n.dataset.id; closeDrawer(); render(); };
+  });
+}
+
+function renderGroupChips(){
+  groupChipsEl.innerHTML = GROUPS.map(g=>{
+    const n = g.id==="all" ? SECTIONS.length : SECTIONS.filter(s=>s.group===g.id).length;
+    return `<button class="gchip ${activeGroup===g.id?"active":""}" data-g="${g.id}">${g.label} ${n}</button>`;
+  }).join("");
+  groupChipsEl.querySelectorAll(".gchip").forEach(c=>{
+    c.onclick=()=>{
+      activeGroup=c.dataset.g;
+      const vis=visibleSections();
+      if(vis.length && !vis.find(s=>s.id===activeSec)) activeSec=vis[0].id;
+      render();
+    };
+  });
+}
+
+function cardDomId(secId, idx){ return `card-${secId}-${idx}`; }
+
+function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+function escapeReg(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+
+function nl2br(s){ return escapeHtml(s).replace(/\n/g,"<br>"); }
+
+/* 左侧结果列表：命中词加标记 */
+function markHtml(str, q){
+  const s = String(str==null ? "" : str);
+  if(!q) return escapeHtml(s);
+  const re = new RegExp(escapeReg(q), "gi");
+  let out = "", last = 0, m;
+  while((m = re.exec(s))){
+    if(!m[0]){ re.lastIndex++; continue; }
+    out += escapeHtml(s.slice(last, m.index)) + `<mark class="hl sm">${escapeHtml(m[0])}</mark>`;
+    last = m.index + m[0].length;
+  }
+  return out + escapeHtml(s.slice(last));
+}
+
+/* 跳转后的卡片内：把命中词包成高亮标记，返回高亮处数 */
+function highlightIn(root, q){
+  if(!root || !q || q.length < 2) return 0;
+  const probe = new RegExp(escapeReg(q), "i");
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      if(!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      const p = node.parentNode;
+      if(!p || /^(SCRIPT|STYLE|MARK|INPUT|TEXTAREA)$/.test(p.nodeName)) return NodeFilter.FILTER_REJECT;
+      return probe.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = []; let n;
+  while((n = walker.nextNode())) nodes.push(n);
+  let count = 0;
+  nodes.forEach(node=>{
+    const text = node.nodeValue, frag = document.createDocumentFragment();
+    const re = new RegExp(escapeReg(q), "gi");
+    let last = 0, m, hit = 0;
+    while((m = re.exec(text))){
+      if(!m[0]){ re.lastIndex++; continue; }
+      if(m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const mark = document.createElement("mark");
+      mark.className = "hl";
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      hit++; last = m.index + m[0].length;
+    }
+    if(last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    if(hit){ node.parentNode.replaceChild(frag, node); count += hit; }
+  });
+  return count;
+}
+
+function clearHighlights(){
+  document.querySelectorAll("mark.hl").forEach(mk=>mk.replaceWith(document.createTextNode(mk.textContent)));
+}
+
+let hlToastTimer = null;
+function showHlToast(msg){
+  let t = document.getElementById("hlToast");
+  if(!t){ t = document.createElement("div"); t.id = "hlToast"; t.className = "hl-toast"; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(hlToastTimer);
+  hlToastTimer = setTimeout(()=>t.classList.remove("show"), 2400);
+}
+
+function rowHaystack(sec, r){
+  const parts=[sec.title, sec.desc, r.title||"", r.priceCap||"", r.price==null?"":String(r.price)];
+  (r.pills||[]).forEach(p=>parts.push(p.t));
+  (r.specs||[]).forEach(s=>parts.push(s[0], s[1]));
+  if(r.table){ r.table.cols.forEach(c=>parts.push(c)); r.table.rows.forEach(row=>row.forEach(c=>parts.push(String(c)))); }
+  (r.benes||[]).forEach(b=>{
+    parts.push(b.t);
+    if(b.d) parts.push(b.d);
+    (b.lines||[]).forEach(l=>parts.push(l[0], l[1]));
+  });
+  (r.cond||[]).forEach(p=>parts.push(p));
+  if(sec.note){ parts.push("说明", sec.noteTitle||""); (Array.isArray(sec.note)?sec.note:[sec.note]).forEach(p=>parts.push(p)); }
+  return parts.join(" ").toLowerCase();
+}
+
+function rowMeta(r){
+  if(r.price!=null) return `${r.priceCap||"资费"}：${r.price}`;
+  if(r.specs&&r.specs.length) return r.specs.map(s=>`${s[0]} ${s[1]}`).join(" · ");
+  if(r.benes&&r.benes.length){
+    const b=r.benes[0];
+    return b.lines ? b.lines.map(l=>`${l[0]} ${l[1]}`).join("；").slice(0,60) : String(b.d).slice(0,60);
+  }
+  return "";
+}
+
+function renderSearch(){
+  if(!searchQ){
+    searchClearEl.classList.remove("show");
+    searchResultsEl.classList.remove("show");
+    searchResultsEl.innerHTML="";
+    sideNavEl.style.display="";
+    navLabelEl.style.display="";
+    return;
+  }
+  searchClearEl.classList.add("show");
+  sideNavEl.style.display="none";
+  navLabelEl.style.display="none";
+  const hits=[];
+  SECTIONS.forEach(s=>s.rows.forEach((r,i)=>{ if(rowHaystack(s,r).includes(searchQ)) hits.push({s,r,i}); }));
+  searchResultsEl.classList.add("show");
+  searchResultsEl.innerHTML = hits.length
+    ? `<div class="rlabel">全页找到 ${hits.length} 条 · 点击跳转到对应卡片</div>` +
+      hits.map(h=>`
+        <div class="result-item" data-sec="${h.s.id}" data-idx="${h.i}">
+          <div class="rs">${h.s.icon} ${h.s.title}</div>
+          <div class="rt">${markHtml(h.r.title || h.s.title, searchQ)}</div>
+          <div class="rm">${markHtml(rowMeta(h.r), searchQ)}</div>
+        </div>`).join("")
+    : `<div class="rlabel">全页查找「${escapeHtml(searchQ)}」</div><div class="result-empty">未找到相关内容，可试试档位金额（如 139、199）、产品名（如 星卡、云电视、二宽、FTTR、随翼选）或地市（如 张家界、岳阳）。</div>`;
+  searchResultsEl.querySelectorAll(".result-item").forEach(el=>{
+    el.onclick=()=>jumpTo(el.dataset.sec, cardDomId(el.dataset.sec, Number(el.dataset.idx)));
+  });
+}
+
+function jumpTo(secId, domId){
+  activeSec=secId;
+  closeDrawer(); render();
+  const q = searchInputEl.value.trim();
+  setTimeout(()=>{
+    const el=document.getElementById(domId);
+    if(!el) return;
+    const hits = highlightIn(el, q);
+    el.classList.add("flash");
+    setTimeout(()=>el.classList.remove("flash"),1900);
+    const firstMark = el.querySelector("mark.hl");
+    (firstMark || el).scrollIntoView({behavior:"smooth", block:"center"});
+    if(hits) showHlToast(`已定位到卡片，并高亮「${q}」共 ${hits} 处`);
+  }, 90);
+}
+
+searchInputEl.addEventListener("input", ()=>{
+  clearHighlights();
+  searchQ=searchInputEl.value.trim().toLowerCase(); renderSearch();
+});
+searchInputEl.addEventListener("keydown", e=>{
+  if(e.key==="Enter"){
+    const first=searchResultsEl.querySelector(".result-item");
+    if(first) jumpTo(first.dataset.sec, cardDomId(first.dataset.sec, Number(first.dataset.idx)));
+  }
+  if(e.key==="Escape"){ clearHighlights(); searchInputEl.value=""; searchQ=""; renderSearch(); }
+});
+searchClearEl.onclick=()=>{ clearHighlights(); searchInputEl.value=""; searchQ=""; renderSearch(); searchInputEl.focus(); };
+
+/* 金额：主数字大字，括号构成小字 */
+function pkgHtml(pkg){
+  const s = String(pkg);
+  const m = s.match(/^(\d+)(（.+）)$/);
+  if(m) return `${escapeHtml(m[1])}<span class="paren">${escapeHtml(m[2])}</span>`;
+  const i = s.indexOf("（");
+  if(i > 0) return `${escapeHtml(s.slice(0,i))}<span class="paren">${escapeHtml(s.slice(i))}</span>`;
+  return escapeHtml(s);
+}
+
+function beneDom(b){
+  const t = escapeHtml(b.t);
+  const d = b.lines
+    ? b.lines.map(l=>`<div class="line">${l[0]?`<span class="lk">${escapeHtml(l[0])}：</span>`:""}<span>${nl2br(String(l[1]))}</span></div>`).join("")
+    : nl2br(b.d==null ? "" : String(b.d));
+  return `<div class="bene${b.focus?' focus':''}"><div class="bene-t">${t}</div><div class="bene-d">${d}</div></div>`;
+}
+
+function cellHtml(cell, isKey){
+  const s = String(cell);
+  const cls = isKey ? ' class="k"' : "";
+  return `<td${cls}>${nl2br(s)}</td>`;
+}
+
+function cardRow(r, sec, idx){
+  const pills = (r.pills||[]).map(p=>`<span class="pill ${p.c||'term'}">${escapeHtml(p.t)}</span>`).join("");
+  const title = r.title ? `<div class="card-title">${escapeHtml(r.title)}</div>` : "";
+  const price = (r.price!=null) ? `<div class="pkg-head"><div class="pkg-cap">${escapeHtml(r.priceCap||"月费 · 元/月")}</div><div class="pkg-price">${pkgHtml(r.price)}</div></div>` : "";
+  const specs = (r.specs&&r.specs.length) ? `<div class="tiers">${r.specs.map(s=>`<div class="tier"><div class="p">${escapeHtml(s[0])}</div><div class="d">${escapeHtml(s[1])}</div></div>`).join("")}</div>` : "";
+  const table = r.table ? `<div class="tbl-wrap"><table class="tbl"><thead><tr>${r.table.cols.map(c=>`<th>${escapeHtml(c)}</th>`).join("")}</tr></thead><tbody>${r.table.rows.map(row=>`<tr>${row.map((c,i)=>cellHtml(c, i===0)).join("")}</tr>`).join("")}</tbody></table></div>` : "";
+  const benes = (r.benes&&r.benes.length) ? `<div class="benes">${r.benes.map(b=>beneDom(b)).join("")}</div>` : "";
+  const cond = (r.cond&&r.cond.length) ? `<div class="cond"><span class="c lab">${escapeHtml(r.cond[0])}</span>${r.cond.slice(1).map(p=>`<span class="c">${escapeHtml(p)}</span>`).join("")}</div>` : "";
+
+  return `
+    <div class="card" id="${cardDomId(sec.id, idx)}">
+      ${pills?`<div class="card-pills">${pills}</div>`:""}
+      ${title}
+      ${price}
+      ${specs}
+      ${table}
+      ${benes}
+      ${cond}
+    </div>`;
+}
+
+function render(){
+  const sec = SECTIONS.find(s=>s.id===activeSec);
+  renderGroupChips();
+  renderNav();
+  appbarTitleEl.textContent = sec.title;
+  appbarBadgeEl.textContent = sec.sub;
+  secTitleEl.textContent = sec.title;
+  secDescEl.textContent = sec.desc;
+  if(sec.note){
+    secNoteEl.hidden = false;
+    const paras = (Array.isArray(sec.note)?sec.note:[sec.note]).map(p=>`<p>${escapeHtml(p)}</p>`).join("");
+    secNoteEl.innerHTML = `<h3>${escapeHtml(sec.noteTitle||"权益金使用说明")}</h3>${paras}`;
+  }else{
+    secNoteEl.hidden = true;
+    secNoteEl.innerHTML = "";
+  }
+  gridEl.innerHTML = sec.rows.map((r,i)=>cardRow(r, sec, i)).join("");
+}
+
+render();
+</script>
+</body>
+</html>
