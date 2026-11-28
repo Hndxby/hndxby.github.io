@@ -125,6 +125,18 @@
   .pw b{font-size:19px;font-weight:800;color:var(--red);white-space:nowrap}
   .pw small{font-size:11px;color:var(--sub)}
 
+  /* 云电脑：功能包规格 + 可选优惠包与最终月费 */
+  .specs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .specs .sp{background:#f4f6f8;color:var(--sub);border-radius:8px;padding:4px 9px;font-size:11.5px;line-height:1.35;white-space:nowrap}
+  .specs .sp b{color:var(--text);font-weight:700}
+  .cpc-cap{font-size:11.5px;font-weight:700;color:var(--sub);letter-spacing:.02em;margin-bottom:-4px}
+  .cpc-list{display:flex;flex-direction:column;gap:8px}
+  .cpc-item{border:1px solid var(--div);border-radius:10px;background:#fcfdfe;padding:10px 12px;display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;min-width:0}
+  .cpc-item .cp-name{flex:1 1 150px;min-width:0;font-size:13px;line-height:1.45}
+  .cpc-item .cp-name em{display:block;font-style:normal;font-size:11px;color:var(--sub);margin-top:2px}
+  .cpc-item .cp-price{flex:none;font-size:19px;font-weight:800;color:var(--red);white-space:nowrap}
+  .cpc-item .cp-price small{font-size:11px;color:var(--sub);font-weight:400;margin-left:1px}
+
   /* 分区级说明面板（权益金使用说明，置于卡片下方） */
   .sec-note{background:var(--orange-l);border:1px solid rgba(237,108,2,.22);border-radius:var(--radius);padding:14px 18px;margin:18px auto 0;max-width:880px}
   .sec-note h3{font-size:14px;font-weight:700;color:var(--orange);margin:0 0 6px}
@@ -233,6 +245,7 @@
           <li><b>档位构成：</b>月费后括号（如 399+200）为该档月费的构成金额，合计即对应月费。</li>
           <li><b>终端优惠：</b>对应产品线可享受的终端优惠金额，以卡片标注为准。</li>
           <li><b>资费口径：</b>商务专线与互联网专线为包月资费（元/月）；酒店完美联盟套餐为包年资费（元/年），各档包含内容相同。</li>
+          <li><b>云电脑业务：</b>公众版云电脑含基础版 / 标准版 / 精英版三档必选功能包，标准资费分别为 60 / 93 / 158 元/月；搭配可选优惠包后，用户最终交费 10-70 元/月；另可选 100G 硬盘促销包 10 元/月。</li>
           <li><b>速率口径：</b>带宽单位为 Mbps；各档速率以卡片标注为准，实际开通速率以办理页面为准。</li>
           <li><b>内容来源：</b>本页为个人收集、整理的资料，如与官方内容不符，请以官方为准。</li>
         </ul>
@@ -312,13 +325,44 @@ const SECTIONS = [
         {price:70},{price:80},{price:100},{price:120},{price:150},{price:180},{price:200}
       ]
     }]
+  },
+  {
+    id:"cloud-pc", group:"cloud", icon:"💻", title:"云电脑业务",
+    sub:"公众版 · 3 档功能包 · 最终 10-70 元/月",
+    desc:"公众版云电脑按功能包分为基础版、标准版、精英版三档（必选），每档可搭配不同优惠包，叠加后用户最终交费 10-70 元/月；另可选 100G 容量硬盘促销包，每月在套餐费基础上加收 10 元。",
+    fitTip:"本类为公众版云电脑资费，功能包必选、优惠包可选，最终交费以优惠包叠加结果为准。",
+    noteTitle:"办理与退订说明",
+    note:"用户可额外加选 100G 容量硬盘促销包，每月在套餐费基础上加收 10 元；如不再使用云电脑，需同时退订必选功能包和所有可选优惠包——仅退订优惠包时，必选功能包按原价收费。",
+    rows:[{
+      kind:"cloudpc", productName:"公众版云电脑",
+      version:{name:"基础版", pid:"9020179", base:60, cpu:"2核", mem:"4G", disk:"120G", down:"50M", up:"2M", scene:"简单办公"},
+      combos:[{pack:"公众云电脑基础版加装包", pid:"9101115", final:30}]
+    },{
+      kind:"cloudpc", productName:"公众版云电脑",
+      version:{name:"标准版", pid:"9020178", base:93, cpu:"4核", mem:"8G", disk:"120G", down:"50M", up:"4M", scene:"视频娱乐、在线教育"},
+      combos:[
+        {pack:"公众云电脑标准版加装包", pid:"9101116", final:45},
+        {pack:"综合权益包（仅限云宽带169/199套餐办理）40元档", pid:"9104796", final:10, extra:"可叠加 9104759 优惠包，权益包由 40 元降至 10 元"},
+        {pack:"单产品20元优惠包", pid:"9307801", final:20},
+        {pack:"10元优惠包", pid:"9307793", final:10},
+        {pack:"校园用户专属10元优惠包", pid:"9107243", final:10}
+      ]
+    },{
+      kind:"cloudpc", productName:"公众版云电脑",
+      version:{name:"精英版", pid:"9020180", base:158, cpu:"8核", mem:"16G", disk:"120G", down:"50M", up:"4M", scene:"重度办公"},
+      combos:[{pack:"公众云电脑精英版加装包", pid:"9101117", final:70}]
+    },{
+      kind:"addon", productName:"可选加装",
+      addon:{name:"公众版云电脑硬盘促销包(100G)", pid:"9105517", price:10, unit:"月"}
+    }]
   }
 ];
 
 const GROUPS = [
   {id:"all", label:"全部"},
   {id:"biz", label:"商务专线"},
-  {id:"hotel", label:"酒店专线"}
+  {id:"hotel", label:"酒店专线"},
+  {id:"cloud", label:"云电脑"}
 ];
 
 let activeSec = SECTIONS[0].id;
@@ -459,6 +503,14 @@ function rowHaystack(sec, r){
       if(t.compose) parts.push(t.compose, `（${t.compose}）`, "构成");
     });
   }
+  if(r.kind==="cloudpc"){
+    const v=r.version;
+    parts.push("云电脑","公众版",v.name,"功能包","优惠包",v.pid,`${v.cpu}CPU`,`${v.mem}内存`,`${v.disk}硬盘`,v.down,v.up,v.scene,String(v.base),`¥${v.base}`,`${v.base}元/月`);
+    r.combos.forEach(c=>parts.push(c.pack,c.pid,String(c.final),`¥${c.final}`,`${c.final}元/月`,c.extra||""));
+  }
+  if(r.kind==="addon"){
+    parts.push("云电脑","硬盘","100G","加装",r.addon.name,r.addon.pid,String(r.addon.price),`¥${r.addon.price}`);
+  }
   if(sec.note) parts.push("说明", sec.noteTitle||"", sec.note);
   return parts.join(" ").toLowerCase();
 }
@@ -483,7 +535,9 @@ function renderSearch(){
       hits.map(h=>{
         const meta = h.r.kind==="tariff"
           ? h.r.tiers.map(t=>t.sym?`¥${t.price}/月 ${t.sym}`:`¥${t.price}/月 上行 ${t.up} / 下行 ${t.down}`).join(" / ")
-          : "";
+          : h.r.kind==="cloudpc"
+          ? `${h.r.version.name} 标准资费 ¥${h.r.version.base}/月 · 最终 ${h.r.combos.map(c=>`¥${c.final}/月`).join(" / ")}`
+          : h.r.kind==="addon" ? `${h.r.addon.name} +¥${h.r.addon.price}/${h.r.addon.unit}` : "";
         return `<div class="result-item" data-sec="${h.s.id}" data-idx="${h.i}">
           <div class="rs">${h.s.icon} ${h.s.title}</div>
           <div class="rt">${markHtml(h.s.title, searchQ)}</div>
@@ -533,6 +587,47 @@ function renderToolbar(){
 function cardRow(row, sec, idx){
   /* 专线资费卡：一个产品线一张合并卡；各档包含内容相同时用价格墙（wall），否则逐档选项行 */
   const unit = row.unit||"月";
+  if(row.kind==="cloudpc"){
+    /* 云电脑：一档功能包一张卡，卡内列示规格与各优惠包叠加后的最终月费 */
+    const v = row.version;
+    const minFinal = Math.min(...row.combos.map(c=>c.final));
+    const combos = row.combos.map(c=>`
+      <div class="cpc-item">
+        <div class="cp-name">${c.pack}<em>优惠包 ID ${c.pid}${c.extra?" · "+c.extra:""}</em></div>
+        <div class="cp-price">¥${c.final}<small>/月</small></div>
+      </div>`).join("");
+    return `
+    <div class="card" id="${cardDomId(sec.id, idx)}">
+      <div class="card-pills">
+        <span class="pill tag">${row.productName} · ${v.name}</span>
+        <span class="pill term">功能包（必选）</span>
+        <span class="pill both">最低 ¥${minFinal}/月</span>
+      </div>
+      <div class="who">${v.name}功能包<small>销售品 ID ${v.pid} · 标准资费 ¥${v.base}/月</small></div>
+      <div class="specs">
+        <span class="sp"><b>${v.cpu}</b> CPU</span>
+        <span class="sp"><b>${v.mem}</b> 内存</span>
+        <span class="sp"><b>${v.disk}</b> 硬盘</span>
+        <span class="sp">下行 <b>${v.down}</b> / 上行 <b>${v.up}</b></span>
+        <span class="sp">适用：${v.scene}</span>
+      </div>
+      <div class="cpc-cap">可选优惠包 · 用户最终交费</div>
+      <div class="cpc-list">${combos}</div>
+    </div>`;
+  }
+  if(row.kind==="addon"){
+    /* 云电脑可选加装包 */
+    const a = row.addon;
+    return `
+    <div class="card" id="${cardDomId(sec.id, idx)}">
+      <div class="card-pills">
+        <span class="pill tag">可选加装包</span>
+        <span class="pill term">销售品 ID ${a.pid}</span>
+      </div>
+      <div class="who">100G 硬盘促销包<small>${a.name} · 每月在套餐费基础上加收</small></div>
+      <div class="pwall"><span class="pw"><b>+¥${a.price}</b><small>/${a.unit}</small></span></div>
+    </div>`;
+  }
   if(row.wall){
     const chips = row.tiers.map(t=>`<span class="pw"><b>¥${t.price}</b><small>/${unit}</small></span>`).join("");
     return `
